@@ -1,0 +1,11 @@
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Color de fondo general de la página */
+}
+
+.main-content {
+    flex: 1; /* Hace que el contenido crezca y empuje hacia abajo cualquier otro elemento */
+    width: 100%;
+}
