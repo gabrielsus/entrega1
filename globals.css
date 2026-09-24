@@ -1,0 +1,16 @@
+.bandera-telefono-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.telefono-texto {
+  margin-top: 0px;
+  margin-left: 0px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  color: #036bfc;
+}
+
