@@ -1,4 +1,4 @@
-import mercadoImg from "../assets/mercado.png";
+import mercadoImg from "../assets/mercado.gif";
 
 const MercadoPago = () => (
   <div className="tarjeta-icono">

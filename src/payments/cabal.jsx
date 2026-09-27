@@ -1,4 +1,4 @@
-import cabalImg from "../assets/cabal.png";
+import cabalImg from "../assets/cabal.gif";
 
 const Cabal = () => (
     <div className="tarjeta-icono">

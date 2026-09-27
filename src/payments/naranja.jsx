@@ -1,4 +1,4 @@
-import naranjaImg from "../assets/naranja.png";
+import naranjaImg from "../assets/naranja.gif";
 
 const Naranja = () => (
     <div className="tarjeta-icono">

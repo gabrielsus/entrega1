@@ -1,4 +1,4 @@
-import visaImage from "../assets/visa.png";
+import visaImage from "../assets/visa.gif";
 
 const Visa = () => (
   <div className="tarjeta-icono">

@@ -14,22 +14,21 @@ import Naranja from '../payments/naranja';
 const Layout = () => {
     return (
         <div className="app-Layout">
-            <Header />
-            <Nav />
+            <Header />           
             <Footer className= "footer-container">
-            <div className="footer-telefonos">
-                <BanderaArgentina telefono="+54 9 11 6932-4650"/>
-                <BanderaBrasil telefono="+55 81 9852-9996" /> 
-                <BanderaUruguay telefono="+598 94 914 367" />
-                <BanderaUSA telefono="+1 555-123-4567" />
-            </div>
-            <div className="footer-pagos">
-                <Visa />
-                <Mastercard />
-                <Cabal />
-                <Naranja />
-                <MercadoPago />
-            </div>
+                <div className="footer-telefonos">
+                    <BanderaArgentina telefono="+54 9 11 6932-4650"/>
+                    <BanderaBrasil telefono="+55 81 9852-9996" /> 
+                    <BanderaUruguay telefono="+598 94 914 367" />
+                    <BanderaUSA telefono="+1 555-123-4567" />
+                </div>
+                <div className="footer-pagos">
+                    <Visa />
+                    <Mastercard />
+                    <Cabal />
+                    <Naranja />
+                    <MercadoPago />
+                </div>
             </Footer>
         </div>
     );

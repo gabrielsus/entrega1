@@ -1,4 +1,4 @@
-import masterImage from "../assets/master.png";
+import masterImage from "../assets/master.gif";
 
 const Mastercard = () => (
   <div className="tarjeta-icono">

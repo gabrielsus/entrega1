@@ -2,7 +2,7 @@
     background-color: #ebf0f5;
     padding: 20px 0;
     text-align: center;
-    font-size: 14px;
+    font-size: 20px;
     color: #6c757d;
     border: 2px solid #22b2ff;
 }
@@ -11,22 +11,38 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px; /* Espacio entre el email y las banderas */
+  gap: 15px;
   width: 100%;
-  padding: 20px 0;
+  max-width: 1200px;
+  margin: 0 auto;    /* Centra todo el bloque perfectamente */
+  padding: 20px;
+  box-sizing: border-box;
+  border: 2px solid #22b2ff;
+  background-color: #f6fbee;
 }
 
 .footer-telefonos {
+  margin-left: 70px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 100px; /* Espacio entre las banderas de los tres países */
+  flex-wrap: nowrap; /* Fuerza a que queden todas en la misma línea */
+  gap: 30px; /* Ajustá este valor si querés más o menos distancia entre ellas */
 }
+
 .footer-pagos {
   display: flex;
-  flex-direction: row;
+  flex-direction: row;        /* Fuerza a que las tarjetas vayan una al lado de la otra */
   align-items: center;
   justify-content: center;
-  gap: 10px; /* Espacio entre las tarjetas de pago */
+  flex-wrap: nowrap;          /* Evita que bajen de renglón si hay espacio */
+  gap: 25px;                  /* Espacio razonable entre los logos de pago */
+}
+
+.footer-email {
+  margin-top: 1px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #0461b3;
 }
