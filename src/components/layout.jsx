@@ -1,3 +1,4 @@
+import {Outlet} from 'react-router-dom';
 import Header from './header';
 import Nav from './nav';
 import Footer from './footer';
@@ -14,7 +15,10 @@ import Naranja from '../payments/naranja';
 const Layout = () => {
     return (
         <div className="app-Layout">
-            <Header />           
+            <Header /> 
+            <main>
+                <Outlet />
+            </main>          
             <Footer className= "footer-container">
                 <div className="footer-telefonos">
                     <BanderaArgentina telefono="+54 9 11 6932-4650"/>
