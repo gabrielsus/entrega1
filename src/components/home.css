@@ -1,0 +1,14 @@
+.home{
+    background-color:#f6f6f6;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.titulo{
+    margin-top: 0px;
+    color:#1A98AB;
+}
+.cuerpo{
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}

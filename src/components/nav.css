@@ -98,3 +98,13 @@
     font-size: 16px;
     font-weight: 500;
 }
+
+.menu-principal {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    padding: 1px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    background-color: rgb(235, 244, 245);
+}
