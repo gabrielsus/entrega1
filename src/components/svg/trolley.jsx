@@ -1,6 +1,7 @@
 export function Trolley(props) {
   return (
     <svg xmlns="http://w3.org" viewBox="0 0 200 200" {...props}>
+      <title>Ver resumen de compra</title>
       <path d="M 70,150 L 145,150" fill="none" stroke="#555555" strokeWidth="5" strokeLinecap="round"/>
       <path d="M 70,150 C 55,150 50,135 52,120 C 54,105 60,95 60,95" fill="none" stroke="#555555" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
       
