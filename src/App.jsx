@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout'; // El layout ya tiene TODO adentro (Header, Outlet y Footer)
 import Home from './components/home';
 import ItemListContainer from './components/itemListContainer';
-
+import Cart from './components/cart'
 function App() {
   return (
     <BrowserRouter>
@@ -11,6 +11,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/productos" element={<ItemListContainer />} />
+          <Route path="/carrito" element={<Cart />} />
         </Route>
       </Routes>
     </BrowserRouter>
