@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './nav.css';
 import traerProductos from '../API/traerproductos.js';
 import Item from './item.jsx';
-import "./errorservidor.css";
+
 const ItemListContainer = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
