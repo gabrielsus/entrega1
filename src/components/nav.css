@@ -108,3 +108,117 @@
     margin-bottom: 1px;
     background-color: rgb(235, 244, 245);
 }
+.btn-lupa-custom {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.btn-lupa-custom:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Un sutil gris transparente al pasar el mouse */
+}
+
+/* Estilos opcionales para la vista de detalle */
+.detalle-container {
+    background-color: #eef3f9 ;
+    max-width: 350px;
+    margin: 20px auto;
+}
+
+.producto-propiedades {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    margin: 10px 0;
+}
+
+.button-ok {
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.button-ok:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para el contenedor de error y su diseño prolijo */
+.error-contenedor {
+    text-align: center;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-imagen {
+    width: 180px;
+    max-width: 100%;
+    margin-bottom: 20px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.error-titulo {
+    font-size: 1.8rem;
+    margin: 10px 0;
+    color: #333;
+}
+
+.error-mensaje {
+    color: #d9534f;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.btn-favorito {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem; /* Ajustá el tamaño si querés que sea más grande o chico */
+    transition: transform 0.2s ease;
+}
+
+.btn-favorito:hover {
+    transform: scale(1.1);
+}
+
+.btn-detalle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px; /* Altura fija para que no se deforme */
+    background-color: #fff;
+    color: #333333;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-detalle:hover {
+    background-color: #e2e6ea;
+    border-color: #adb5bd;
+}
+
+/* Controlamos el tamaño del ojito para que quede elegante y centrado */
+.btn-detalle .flecha-detalle {
+    font-size: 1.2rem;
+}
