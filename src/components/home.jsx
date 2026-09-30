@@ -1,14 +1,18 @@
 import "./home.css";
-const home = () => {
+
+const Home = () => {
   return (
     <div className="home">
-        <h1 className="titulo">
-            <br/>
-            Bienvenidos a E-SHOP ARGENTINA
-        </h1>
-        <p className="cuerpo">En nuestra tienda online encontrarás una amplia variedad de productos de alta calidad, desde ropa y accesorios hasta tecnología y artículos para el hogar. Nos enorgullece ofrecer un servicio al cliente excepcional y una experiencia de compra segura y confiable. ¡Explora nuestro catálogo y descubre todo lo que tenemos para ofrecer!<br/><br/></p>
+      <h1 className="titulo">
+        ¡Todo lo que buscás, en un solo lugar! 🚀
+      </h1>
+      <br/>
+      <p className="cuerpo">
+        Explorá nuestro catálogo de punta a punta. Calidad, envíos rápidos y la mejor selección en ropa, tecnología y artículos para el hogar. ¡Sumá lo que te guste al carrito y arrancá! ✨
+      </p>
+      <br/>
     </div>
-  )
+  );
 }
 
-export default home
+export default Home;

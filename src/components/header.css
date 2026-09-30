@@ -32,8 +32,9 @@
 /* Estilo para que la bolsa quede chiquita y prolija a la derecha */
 .bolsa-chiquita {
   width: 200px !important;  /* Tamaño fijo chico */
-  height: 100px !important; /* Tamaño fijo chico */
+  height: 101px !important; /* Tamaño fijo chico */
   /* object-fit: contain !important; Mantiene la proporción de la imagen */
   border-radius: 0 !important;   /* Evita que se haga circular */
   mix-blend-mode: normal !important;
+  filter: contrast(1.01) brightness(0.98);
 }

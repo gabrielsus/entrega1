@@ -271,3 +271,52 @@
 .btn-reintentar:active {
     transform: scale(0.98);
 }
+
+.menu-principal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Esto distribuye espacio: izquierda y derecha */
+    align-items: center;
+    padding: 10px 25px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    
+    /* Fondo sólido y limpio que combina con la paleta */
+    background-color: #f4f9fb !important;
+    background-image: none !important; /* Chau cuadrillé */
+    
+    border-bottom: 2px solid #e1edf2;
+}
+
+/* Opcional: si querés ponerle un texto institucional sutil a la izquierda para que no quede vacío */
+.menu-principal::before {
+    content: "¡Bienvenido a nuestra tienda online!";
+    font-size: 0.95rem;
+    color: #55829b;
+    font-weight: 500;
+    font-family: Arial, sans-serif;
+}
+
+.menu-principal div, 
+.menu-principal nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+.menu-principal a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    background-color: #ffffff;
+    border: 1px solid #d0e4ed;
+    border-radius: 8px;
+    transition: all 0.25s ease !important;
+}
+
+.menu-principal a:hover {
+    background-color: #e6f3f8 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(24, 99, 142, 0.1) !important;
+    border-color: #9ac5d6;
+}
