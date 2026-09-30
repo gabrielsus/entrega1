@@ -1,19 +1,25 @@
 .encabezado {
   display: flex !important;
-  justify-content: flex-start !important; /* horizontal */
+  justify-content: space-between !important; /* Separa los elementos: izquierda y derecha */
   align-items: center !important;
-  background-image: linear-gradient(to right, #D6F2F6 0%, #b8d4f6 50%, #9a98f9 100%);
+  background-image: linear-gradient(to right, #D6F2F6 0%, #95DAFD 100%);
   gap: 1rem !important;
   padding: 1rem !important;
   font-family: Arial, sans-serif;
   border: 2px solid #18638E;
 }
 
+.encabezado-izquierda {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .encabezado img {
   border-radius: 50%;
-  margin-right: 1rem;
   width: 80px;
   height: 80px;
+  object-fit: cover;
   mix-blend-mode: multiply;
 }
 
@@ -21,8 +27,13 @@
   font-size: 2rem;
   color: #1A98AB;
   margin: 0;
-  display: flex;
-  flex-grow: 1;
-  align-items: right;
-  text-align: right;
+}
+
+/* Estilo para que la bolsa quede chiquita y prolija a la derecha */
+.bolsa-chiquita {
+  width: 200px !important;  /* Tamaño fijo chico */
+  height: 100px !important; /* Tamaño fijo chico */
+  /* object-fit: contain !important; Mantiene la proporción de la imagen */
+  border-radius: 0 !important;   /* Evita que se haga circular */
+  mix-blend-mode: normal !important;
 }
