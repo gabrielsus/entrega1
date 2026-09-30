@@ -5,7 +5,7 @@ const Header = () => {
     return (
         <div>
             <div className="encabezado">
-                <img src = {logo} alt="E-SHOP ARGENTINA" />
+                <img src = {logo} alt="E-SHOP ARGENTINA" className="header-bg" />
                 <h1> E-SHOP ARGENTINA  </h1>           
             </div>
             <Nav />

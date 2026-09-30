@@ -32,7 +32,7 @@ const ItemListContainer = () => {
                     <h2>¡Ups!</h2>
                     <p>No hay conexión con el servidor.</p>
                     <button onClick={fetchProductos} className="btn-reintentar">
-                            <Reload height="24" width="24"/>
+                            <Reload height="30" width="30"/>
                     </button> 
                 </div>
             )} 
