@@ -1,5 +1,5 @@
 .footer {
-    background-color: #ebf0f5;
+    background-color: #f5f7f9;
     padding: 20px 0;
     text-align: center;
     font-size: 20px;
@@ -18,7 +18,8 @@
   padding: 20px;
   box-sizing: border-box;
   border: 2px solid #22b2ff;
-  background-color: #f6fbee;
+  /* background-color: #f9fbee; */
+  background-image: linear-gradient(to right, #f6fbee 0%, #f4ff1f67 100%);
 }
 
 .footer-telefonos {
