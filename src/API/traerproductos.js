@@ -14,6 +14,9 @@ const traerProductos = async () => {
     } catch (error) {
         console.error("Error al traer productos:", error);
         throw error; // Relanzamos el error para que el componente que lo llame se entere
+    } finally {
+        // Se ejecuta siempre, ideal para ocultar spinners o loadings globales si usaras alguno acá
+        console.log("Finalizó el intento de traer los productos.");
     }
 }; 
 

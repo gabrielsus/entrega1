@@ -1,23 +1,25 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import traerProductoPorId from "../API/traerunproducto.js"; // Importamos el servicio que acabamos de crear
+import traerProductoPorId from "../API/traerunproducto.js";
 import { svgPlaceholder } from "./svg/svgPlaceHolder";
 import './nav.css';
 import '/globals.css';
+import './detalles.css';
 
 const DetalleProducto = () => {
-    const { id } = useParams(); // 1. Capturamos el ID de la URL (ej: /producto/1)
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const [producto, setProducto] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
+    // 1. Estado para manejar el feedback visual de agregado al carrito (igual que en Item.jsx)
+    const [fueAgregado, setFueAgregado] = useState(false);
+
     useEffect(() => {
-        // 2. Nos posicionamos en el tope de la página al cargar el componente
         window.scrollTo(0, 0);
 
-        // 3. Llamamos a nuestra función para buscar el producto por ID
         const cargarProducto = async () => {
             try {
                 setLoading(true);
@@ -35,18 +37,38 @@ const DetalleProducto = () => {
         if (id) {
             cargarProducto();
         }
-    }, [id]); // Se vuelve a ejecutar si cambia el id en la URL
+    }, [id]);
 
     const handlerVolver = () => {
         navigate(-1);
     };
 
-    // Si está cargando, mostramos algo sutil o un loader
+    // 2. Función para agregar al carrito usando localStorage (idéntica a la de Item.jsx)
+    const handleAgregarCarrito = () => {
+        if (!producto) return;
+        
+        const productoAeliminaroAgregar = { 
+            id: producto.id, 
+            description: producto.description, 
+            price: producto.price, 
+            image: producto.image 
+        };
+        
+        const carritoActual = JSON.parse(localStorage.getItem('carrito')) || [];
+        const nuevoCarrito = [...carritoActual, productoAeliminaroAgregar];
+        
+        localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+        setFueAgregado(true);
+
+        setTimeout(() => {
+            setFueAgregado(false);
+        }, 2000);
+    };
+
     if (loading) {
         return <div className="detalle-container"><p>Cargando detalle del producto...</p></div>;
     }
 
-    // Si hubo un error (acá podrías usar tu componente de error con el enchufe lindo que armamos antes)
     if (error || !producto) {
         return (
             <div className="detalle-container">
@@ -67,16 +89,21 @@ const DetalleProducto = () => {
            <h4 className="item-description">{producto.description}</h4>
            <p className="item-price">${producto.price ? Number(producto.price).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</p>
             
-            {/* Propiedades exclusivas del producto */}
             <div className="producto-propiedades" style={{ margin: '12px 0', fontSize: '0.9rem', color: '#555', textAlign: 'left', padding: '0 10px' }}>
                 <p><strong>Origen:</strong> {producto.origin || 'No especificado'}</p>
                 <p><strong>Peso:</strong> {producto.weight ? `${producto.weight}` : 'No especificado'}</p>
             </div>
 
-            {/* Botón OK para volver */}
-            <button onClick={handlerVolver} className="button-ok">
-                OK
-            </button>
+            {/* 3. Botones de acción: Agregar al carrito y Volver */}
+            <div className="detalle-botones">
+                <button onClick={handleAgregarCarrito} className="btn-agregar-detalle" title="Agregar al carrito">
+                    {fueAgregado ? '✅ ¡Listo!' : '🛒 Agregar'}
+                </button>
+                
+                <button onClick={handlerVolver} className="btn-volver-detalle">
+                    Volver
+                </button>
+            </div>
         </div>
     );
 };

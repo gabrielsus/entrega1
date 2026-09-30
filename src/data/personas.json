@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nombre": "Lucas Gómez",
+    "puesto": "Soporte Técnico",
+    "imagen": "https://randomuser.me/api/portraits/men/32.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Sofía Martínez",
+    "puesto": "Atención al Cliente",
+    "imagen": "https://randomuser.me/api/portraits/women/44.jpg"
+  },
+  {
+    "id": 3,
+    "nombre": "Camila Medina",
+    "puesto": "Logística y Envíos",
+    "imagen": "https://randomuser.me/api/portraits/women/86.jpg"
+  }
+]

@@ -13,6 +13,9 @@ const traerProductoPorId = async (id) => {
     } catch (error) {
         console.error(`Error al traer el producto ${id}:`, error);
         throw error;
+    } finally {
+        // Se ejecuta siempre al terminar la petición (éxito o error)
+        console.log(`Finalizó la petición del producto ID: ${id}`);
     }
 }; 
 

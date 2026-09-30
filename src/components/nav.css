@@ -245,3 +245,29 @@
 .error-contenedor p {
     font-size: 1.1rem;
 }
+
+.btn-reintentar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre el ícono de reload y el texto */
+    background: transparent; /* Sin fondo */
+    border: none; /* Sin borde */
+    color: #007bff; /* Color del texto e ícono (podés cambiarlo al color de tu app, ej: #333 o un azul lindo) */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Efecto cuando pasas el mouse por encima (sutil y copado) */
+.btn-reintentar:hover {
+    background-color: rgba(0, 123, 255, 0.08); /* Fondo muy suave al hacer hover */
+    color: #0056b3;
+}
+
+/* Efecto cuando lo presionás */
+.btn-reintentar:active {
+    transform: scale(0.98);
+}

@@ -1,0 +1,49 @@
+/* Contenedor de los botones en el detalle */
+.detalle-botones {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-top: 15px;
+    align-items: center;
+}
+
+/* Estilo unificado para los botones del detalle */
+.detalle-botones button {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Botón de agregar al carrito (estilo secundario o limpio) */
+.btn-agregar-detalle {
+    background-color: #f1f3f5;
+    color: #333;
+    border: 1px solid #ced4da !important;
+}
+
+.btn-agregar-detalle:hover {
+    background-color: #e2e6ea;
+}
+
+/* Botón de volver (estilo principal con el azul que ya usás) */
+.btn-volver-detalle {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-volver-detalle:hover {
+    background-color: #0056b3;
+}
+
+.detalle-botones button:active {
+    transform: scale(0.98);
+}

@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import './nav.css';
 import traerProductos from '../API/traerproductos.js';
 import Item from './item.jsx';
-
+import enchufe from '../assets/enchufe.png';
+import Reload from './svg/reload';
 const ItemListContainer = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
         const fetchProductos = async () => {
             try {
                 const data = await traerProductos();
@@ -19,6 +18,7 @@ const ItemListContainer = () => {
                 setLoading(false);
             }
         };
+    useEffect(() => {
         fetchProductos();
     }, []); 
 
@@ -31,6 +31,9 @@ const ItemListContainer = () => {
                     <img src={enchufe} alt = 'Sin Conexión' className='error-imagen'/>
                     <h2>¡Ups!</h2>
                     <p>No hay conexión con el servidor.</p>
+                    <button onClick={fetchProductos} className="btn-reintentar">
+                            <Reload height="24" width="24"/>
+                    </button> 
                 </div>
             )} 
 
