@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import traerProductoPorId from "../API/traerunproducto.js";
+import { CartContext } from "./cart/CartContext"; // Ajustá la ruta según tu estructura
 import { svgPlaceholder } from "./svg/svgPlaceHolder";
 import './nav.css';
 import '/globals.css';
@@ -13,9 +14,10 @@ const DetalleProducto = () => {
     const [producto, setProducto] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-
-    // 1. Estado para manejar el feedback visual de agregado al carrito (igual que en Item.jsx)
     const [fueAgregado, setFueAgregado] = useState(false);
+
+    // 1. Consumimos el contexto global del carrito
+    const { addToCart } = useContext(CartContext);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -43,21 +45,18 @@ const DetalleProducto = () => {
         navigate(-1);
     };
 
-    // 2. Función para agregar al carrito usando localStorage (idéntica a la de Item.jsx)
+    // 2. Usamos el contexto en lugar de localStorage a mano
     const handleAgregarCarrito = () => {
         if (!producto) return;
         
-        const productoAeliminaroAgregar = { 
+        // Llamamos a la función del context pasándole el producto
+        addToCart({ 
             id: producto.id, 
             description: producto.description, 
             price: producto.price, 
             image: producto.image 
-        };
-        
-        const carritoActual = JSON.parse(localStorage.getItem('carrito')) || [];
-        const nuevoCarrito = [...carritoActual, productoAeliminaroAgregar];
-        
-        localStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+        }, 1); // Cantidad 1 por defecto
+
         setFueAgregado(true);
 
         setTimeout(() => {
@@ -94,7 +93,6 @@ const DetalleProducto = () => {
                 <p><strong>Peso:</strong> {producto.weight ? `${producto.weight}` : 'No especificado'}</p>
             </div>
 
-            {/* 3. Botones de acción: Agregar al carrito y Volver */}
             <div className="detalle-botones">
                 <button onClick={handleAgregarCarrito} className="btn-agregar-detalle" title="Agregar al carrito">
                     {fueAgregado ? '✅ ¡Listo!' : '🛒 Agregar'}

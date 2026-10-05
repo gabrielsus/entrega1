@@ -1,49 +1,61 @@
-import {useState} from "react";
-import {Link} from "react-router-dom"
+import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
+import { CartContext } from "./cart/CartContext"; // Ajustá la ruta según tu estructura
 import './nav.css';
 import '/globals.css';
 import { imagenError } from "./svg/imagenError";
-// Un SVG optimizado con un viewBox chico para que no se desborde
+
 const svgPlaceholder = imagenError;
-const Item = ({id,description, price, image,favoritoInicial}) => {
+
+const Item = ({ id, description, price, image, favoritoInicial }) => {
     const [imgsrc, setImgsrc] = useState(image || svgPlaceholder);
     const [esFavorito, setEsFavorito] = useState(favoritoInicial);
+    const [fueAgregado, setFueAgregado] = useState(false);
+
+    // 1. Consumimos el contexto del carrito
+    const { addToCart } = useContext(CartContext);
+
     const handleFavoritoClick = () => {
         setEsFavorito(!esFavorito);
+        // Acá más adelante podrás llamar a tu futuro FavoritosContext o API de Django
     };
-    const [fueAgregado, setFueAgregado] = useState(false);
-    const handleAgregarCarrito = () =>
-            {
-                const productoAeliminaroAgregar = {id,description,price,image};
-                const carritoActual = JSON.parse(localStorage.getItem('carrito')) || [];
-                const nuevoCarrito = [...carritoActual,productoAeliminaroAgregar]
-                localStorage.setItem('carrito',JSON.stringify(nuevoCarrito));
-                setFueAgregado(true);
 
-                setTimeout(() => {
-                    setFueAgregado(false);
-                }, 2000);
-            }    
+    const handleAgregarAlCarrito = () => {
+        // 2. Ejecutamos la acción global del contexto pasándole el producto
+        addToCart({ id, description, price, image }, 1); // Asumimos cantidad 1 por defecto desde la card
 
-        return(
+        setFueAgregado(true);
+        setTimeout(() => {
+            setFueAgregado(false);
+        }, 2000);
+    };
+
+    return (
         <div className="item">
-            <img src={imgsrc} alt={description} className='item-image' 
+            <img 
+                src={imgsrc} 
+                alt={description} 
+                className='item-image' 
                 onError={() => setImgsrc(svgPlaceholder)}
             />
             <h4 className="item-description">{description}</h4>
-            <p className="item-price">${price ? Number(price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'}</p>
+            <p className="item-price">
+                ${price ? Number(price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'}
+            </p>
+            
             <button onClick={handleFavoritoClick} className="btn-favorito">
                 {esFavorito ? '❤️' : '🤍'}
             </button>
+            
             <Link to={`/producto/${id}`} className="btn-detalle" title="Ver detalles del producto">
                 <span className="flecha-detalle">👁</span>
             </Link>
-            <button onClick={handleAgregarCarrito} className="button-carrito" title="Agregar al carrito">
-                    {fueAgregado ? '✅ ¡Listo!' : '🛒'}
-        </button>
+            
+            <button onClick={handleAgregarAlCarrito} className="button-carrito" title="Agregar al carrito">
+                {fueAgregado ? '✅ ¡Listo!' : '🛒'}
+            </button>
         </div>
     );
 }; 
 
 export default Item;
-
