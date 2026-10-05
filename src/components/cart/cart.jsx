@@ -47,7 +47,7 @@ const Cart = () => {
                                 ${Number(prod.price * (prod.cantidad || 1)).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </div>
                             {/* Botón de eliminar ítem completo */}
-                            <button onClick={() => deleteItem(prod.id)} className="cart-delete-item-btn">
+                            <button onClick={() => deleteItem(prod.id)} className="cart-delete-item-btn" title="Eliminar producto del carrito">
                                 🗑️
                             </button>
                         </div>

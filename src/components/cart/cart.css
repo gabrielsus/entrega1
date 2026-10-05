@@ -51,10 +51,19 @@
     margin-left: 20px;
 }
 
+.cart-item-price-section {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column; /* Pone el precio arriba y el tacho abajo (o al revés si querés) */
+    align-items: flex-end;   /* Los alinea prolijamente contra la derecha */
+    gap: 10px;               /* ¡Acá controlás exactamente la distancia entre el precio y el tacho! */
+}
+
 .cart-item-price {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #333;
+    margin-bottom: 1px;
 }
 
 .cart-clear-container {
@@ -211,12 +220,14 @@
     color: #06f67a;
     border-color: #06f67a;
     background-color: #ddf6ee;
+     padding-bottom: 2px; 
 }
 
 .cart-btn-qty-rojo {
     color: #f70606;
     border-color: #f70606;
     background-color: #faecec;
+    padding-bottom: 5px; /* Ajuste para centrar el signo menos */
 }
 
 .cart-btn-qty:hover {
@@ -228,4 +239,16 @@
 .cart-btn-qty:active {
     background-color: #e5e7eb;
     transform: scale(0.95);
+}
+
+.cart-delete-item-btn {
+    background-color: #F4FAFD;
+    color: #000;
+    border: none;
+    padding: 2px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 2rem;
+    margin-bottom: -12px;
 }
