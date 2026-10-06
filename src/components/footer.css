@@ -15,6 +15,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;    /* Centra todo el bloque perfectamente */
+  margin-bottom: 20px; /* Espacio inferior para separar del borde de la página */
   padding: 20px;
   box-sizing: border-box;
   border: 2px solid #22b2ff;
@@ -46,4 +47,62 @@
   font-size: 15px;
   font-weight: bold;
   color: #0461b3;
+}
+
+.footer-derechos {
+  font-size: 18px;
+  color: #000508;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.footer-gcba {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1px;
+  width: 1500px; /* Ajustá el tamaño según tus necesidades */
+  height: auto; /* Mantiene la proporción del logo */
+  font-size: 14px;
+  gap: 20px; /* Espacio entre el logo y el texto */
+  padding: 5px;
+  text-decoration: none; /* Evita subrayado en el enlace */
+}
+
+.footer-gcba-logo {
+  width: 40%;
+  height: 40%; /* Mantiene la proporción del logo */
+  margin-right: 10px; /* Espacio entre el logo y el texto */
+}
+
+.footer-argentina-logo {
+  width: 40%;
+  height: 40%; /* Mantiene la proporción del logo */
+  margin-right: 0px; /* Espacio entre el logo y el texto */
+  margin-top: 20px; /* Ajusta el margen superior si es necesario */
+  margin-left: 80px; /* Ajusta el margen izquierdo si es necesario */
+}
+
+.footer-gcba-text {
+  color: #070707;
+  font-weight: bold;
+  text-decoration: none !important; /* Evita subrayado en el texto */
+  font-size: 13px;
+  font-family: Montserrat, Arial, sans-serif; /* Fuente legible y profesional */
+  margin-top: -20px; /* Ajusta el margen superior si es necesario */
+}
+
+.footer-arg-text {
+  color: #070707;
+  font-weight: bold;
+  text-decoration: none !important; /* Evita subrayado en el texto */
+  font-size: 13px;
+  font-family: Montserrat, Arial, sans-serif; /* Fuente legible y profesional */
+  margin-top: -10px; /* Ajusta el margen superior si es necesario */
+  margin-left: 80px; /* Ajusta el margen izquierdo si es necesario */
+}
+
+a {
+  text-decoration: none; /* Evita subrayado en todos los enlaces */
 }
