@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import traerProductoPorId from "../API/traerunproducto.js";
+import traerProductoPorId from "../API/django/traerunproducto.js";
 import { CartContext } from "./cart/CartContext"; // Ajustá la ruta según tu estructura
 import { svgPlaceholder } from "./svg/svgPlaceHolder";
 import './nav.css';

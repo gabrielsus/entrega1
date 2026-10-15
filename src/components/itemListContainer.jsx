@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './nav.css';
-import traerProductos from '../API/traerproductos.js';
+import traerProductos from '../API/django/traerproductos.js';
 import Item from './item.jsx';
 import enchufe from '../assets/enchufe.png';
 import Reload from './svg/reload';
