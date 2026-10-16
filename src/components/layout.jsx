@@ -1,6 +1,5 @@
 import {Outlet} from 'react-router-dom';
 import Header from './header';
-import Nav from './nav';
 import Footer from './footer';
 import './layout.css';
 import BanderaArgentina from '../flags/argentina';

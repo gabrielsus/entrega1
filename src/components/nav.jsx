@@ -11,16 +11,16 @@ const Nav = () => {
     return (
         <nav className="nav-container">
             <div className='menu-principal'>
-                <Link to= "/">
+                <Link to= "/" title="Inicio">
                     <House width="50px" height="50px" />
                 </Link>
-                <Link to= "/productos">
+                <Link to= "/productos"  title="Productos Nacionales">
                     <Bag width ="50px" height="50px" />
                 </Link>
-                {/* <Link to= "/WorldCommerce"> */}
+                <Link to= "/productosinternacionales" title="Productos Internacionales">
                     <CartWidget width="50px" height="50px" />
-                {/* </Link> */}
-                <Link to = "/carrito" className="nav-cart-link">
+                </Link>
+                <Link to = "/carrito" className="nav-cart-link" title="Ver resumen de compra">
                     <Trolley widht ="50px" height="50px" />
                     {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
                 </Link>

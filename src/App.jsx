@@ -4,6 +4,7 @@ import Home from './components/home';
 import ItemListContainer from './components/itemListContainer';
 import Cart from './components/cart/cart'
 import DetalleProducto from './components/detalleProducto';
+import ItemListContainerFirebase from './components/itemListContainerFirebase';
 function App() {
   return (
       <Routes>
@@ -11,6 +12,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/productos" element={<ItemListContainer />} />
+          <Route path="/productosinternacionales" element={<ItemListContainerFirebase />} />
           <Route path="/carrito" element={<Cart />} />
           {/* Ruta dinámica para el detalle del producto (usando el ID) */}
           <Route path="/producto/:id" element={<DetalleProducto />} />
