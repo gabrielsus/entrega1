@@ -1,6 +1,7 @@
 import './gestion.css';
 import logo from '../../assets/e-shop.jpg'; 
 import { useState } from 'react';
+import ListaProductosLocal from './listaProductosLocal';
 const Gestion = () => {
   const [pestanaActiva, setPestanaActiva] = useState('productos');
   return (
@@ -17,7 +18,10 @@ const Gestion = () => {
       {/* // Gestión de tabs */}
       <div className="gestion-tabs">
         <button className={"tab-btn " + (pestanaActiva === 'productos' ? 'activa' : '')} onClick={() => setPestanaActiva('productos')}>
-          Productos
+          Productos Envío Local
+        </button>
+        <button className={"tab-btn " + (pestanaActiva === 'productosInt' ? 'activa' : '')} onClick={() => setPestanaActiva('productosInt')}>
+          Productos Envío Internacional
         </button>
         <button className={"tab-btn " + (pestanaActiva === 'cupones' ? 'activa' : '')} onClick={() => setPestanaActiva('cupones')}>
           Cupones
@@ -28,7 +32,13 @@ const Gestion = () => {
         {pestanaActiva === 'productos' && (
           <div className="gestion-productos">
             <h2>Productos</h2>
-            <p>Contenido de la pestaña de productos</p>
+            <ListaProductosLocal />
+          </div>
+        )}
+        {pestanaActiva === 'productosInt' && (
+          <div className="gestion-productos">
+            <h2>Productos Envío Internacional</h2>
+            <p>Contenido de la pestaña de productos de envío internacional</p>
           </div>
         )}
         {pestanaActiva === 'cupones' && (

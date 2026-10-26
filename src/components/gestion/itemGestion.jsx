@@ -1,6 +1,7 @@
-import {imageError} from "../svg/imagenError";
-const svgPlaceholder = imageError;
+import {imagenError} from "../svg/imagenError";
+const svgPlaceholder = imagenError;
 import './nav.css';
+import { useState } from 'react';
 
 const ItemGestion =({id,description,price,image,shipping,OnEdit, OnDelete})=>{
     const [imgsrc, setImgsrc] = useState(image || svgPlaceholder);
