@@ -1,6 +1,8 @@
 import traerProductos from "../../API/django/traerproductos";
 import { useEffect, useState } from "react";
 import ItemGestion from "./itemGestion";
+import FormProdLocal from "./forms/formProdLocal";
+import { Form } from "react-router-dom";
 
 const ListaProductosLocal = () => {
   const [productos, setProductos] = useState([]);
@@ -21,9 +23,12 @@ const ListaProductosLocal = () => {
 
     fetchProductos();
   }, []);
-
+ const [modalAbierto, setModalAbierto] = useState(false);
+ const [productoSeleccionado, setProductoSeleccionado] = useState(null);
  const handleEdit = (id) => {
-    console.log("Editar producto ID:", id);
+    const productoAEditar = productos.find((producto) => producto.id === id);
+    setProductoSeleccioando(productoAEditar);
+    setModalAbierto(true);
   };
 
   const handleDelete = (id) => {
@@ -50,6 +55,17 @@ const ListaProductosLocal = () => {
           />
         ))}
       </div>
+      {/*Aquí agrego el modal para editar el producto*/}
+      <FormProdLocal
+        initialData={productoSeleccionado}
+        onSubmit={(updatedData) => {
+          // Lógica para actualizar el producto
+        }}
+        OnCancel={() => {
+          setModalAbierto(false);
+          setProductoSeleccionado(null);
+        }}
+      />
     </div>
   );
 };

@@ -1,0 +1,40 @@
+/* 1. El fondo oscuro semitransparente que cubre toda la pantalla */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Oscurece el fondo por detrás */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Lo manda al frente de todo */
+}
+
+/* 2. La caja del formulario en sí (el modal flotante) */
+.form-prod-local {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Estilo para los bloques internos de cada input */
+.form-prod-local div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-prod-local input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
