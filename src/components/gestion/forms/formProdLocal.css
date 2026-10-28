@@ -1,40 +1,83 @@
-/* 1. El fondo oscuro semitransparente que cubre toda la pantalla */
+/* 1. El telón de fondo oscuro que cubre toda la pantalla */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); /* Oscurece el fondo por detrás */
+  background-color: rgba(0, 0, 0, 0.7); /* Oscurece el fondo */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Lo manda al frente de todo */
+  z-index: 9999;
 }
 
-/* 2. La caja del formulario en sí (el modal flotante) */
-.form-prod-local {
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 8px;
+/* 2. La caja blanca principal del formulario (Sólida, opaca y centrada) */
+.form-prod-local, 
+.modal-contenido {
+  background-color: #eaf5fd !important;
+  opacity: 1 !important;
+  padding: 2.5rem;
+  border-radius: 12px;
   width: 100%;
   max-width: 450px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10000;
 }
 
-/* Estilo para los bloques internos de cada input */
-.form-prod-local div {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+/* 3. Inputs y etiquetas prolijos */
+.form-prod-local label,
+.modal-contenido label {
+  display: block !important;
+  text-align: left !important;
+  width: 100% !important;
+  color:#117efb;
+  font-weight: 600;
 }
 
-.form-prod-local input {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
+.form-prod-local input,
+.modal-contenido input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.95rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #2d3748;
+  box-sizing: border-box;
+}
+
+/* 4. Los botones en paralelo que ya logramos armar bien */
+.modal-botones {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  gap: 12px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.modal-botones button {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-botones button[type="submit"] {
+  background-color: #4a90e2;
+  color: #ffffff;
+}
+
+.modal-botones button[type="button"] {
+  background-color: #e57373;
+  color: #ffffff;
 }

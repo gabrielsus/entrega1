@@ -27,7 +27,7 @@ const ListaProductosLocal = () => {
  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
  const handleEdit = (id) => {
     const productoAEditar = productos.find((producto) => producto.id === id);
-    setProductoSeleccioando(productoAEditar);
+    setProductoSeleccionado(productoAEditar);
     setModalAbierto(true);
   };
 
@@ -56,16 +56,19 @@ const ListaProductosLocal = () => {
         ))}
       </div>
       {/*Aquí agrego el modal para editar el producto*/}
-      <FormProdLocal
-        initialData={productoSeleccionado}
-        onSubmit={(updatedData) => {
-          // Lógica para actualizar el producto
-        }}
-        OnCancel={() => {
-          setModalAbierto(false);
-          setProductoSeleccionado(null);
-        }}
-      />
+{/* Aquí agrego el modal para editar el producto de forma condicional */}
+      {modalAbierto && (
+        <FormProdLocal
+          initialData={productoSeleccionado}
+          onSubmit={(updatedData) => {
+            // Lógica para actualizar el producto
+          }}
+          onCancel={() => {
+            setModalAbierto(false);
+            setProductoSeleccionado(null);
+          }}
+        />
+      )}
     </div>
   );
 };
