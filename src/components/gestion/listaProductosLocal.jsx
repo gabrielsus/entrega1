@@ -2,7 +2,7 @@ import traerProductos from "../../API/django/traerproductos";
 import { useEffect, useState } from "react";
 import ItemGestion from "./itemGestion";
 import FormProdLocal from "./forms/formProdLocal";
-import { Form } from "react-router-dom";
+import updateProducto from "../../API/django/updateproducto";
 
 const ListaProductosLocal = () => {
   const [productos, setProductos] = useState([]);
@@ -60,8 +60,8 @@ const ListaProductosLocal = () => {
       {modalAbierto && (
         <FormProdLocal
           initialData={productoSeleccionado}
-          onSubmit={(updatedData) => {
-            // Lógica para actualizar el producto
+          onSubmit={async(updatedData) => {
+                          await updateProducto(productoSeleccionado.id, updatedData)
           }}
           onCancel={() => {
             setModalAbierto(false);
