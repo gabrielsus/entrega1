@@ -3,11 +3,18 @@ import { useEffect, useState } from "react";
 import ItemGestion from "./itemGestion";
 import FormProdLocal from "./forms/formProdLocal";
 import updateProducto from "../../API/django/updateproducto";
+import AlertaSimple from "../../alertas/alertasimple";
 
 const ListaProductosLocal = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  
+  // Estado para manejar la apertura y el texto de la alerta propia
+  const [alertaMensaje, setAlertaMensaje] = useState(null);
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -23,9 +30,8 @@ const ListaProductosLocal = () => {
 
     fetchProductos();
   }, []);
- const [modalAbierto, setModalAbierto] = useState(false);
- const [productoSeleccionado, setProductoSeleccionado] = useState(null);
- const handleEdit = (id) => {
+
+  const handleEdit = (id) => {
     const productoAEditar = productos.find((producto) => producto.id === id);
     setProductoSeleccionado(productoAEditar);
     setModalAbierto(true);
@@ -46,27 +52,46 @@ const ListaProductosLocal = () => {
           <ItemGestion
             key={producto.id}
             id={producto.id}
-            description={producto.description} // Mapeás 'nombre' de Django a 'description'
-            price={producto.price}       // Mapeás 'precio' a 'price'
-            image={producto.image}       // Asegurate que el campo en Django se llame así o ajustalo
-            shipping={producto.shipping}     // El campo de envío que devuelva tu API
+            description={producto.description}
+            price={producto.price}
+            image={producto.image}
+            shipping={producto.shipping}
             OnEdit={handleEdit}
             OnDelete={handleDelete}
           />
         ))}
       </div>
-      {/*Aquí agrego el modal para editar el producto*/}
-{/* Aquí agrego el modal para editar el producto de forma condicional */}
+
+      {/* Modal para editar el producto */}
       {modalAbierto && (
         <FormProdLocal
           initialData={productoSeleccionado}
-          onSubmit={async(updatedData) => {
-                          await updateProducto(productoSeleccionado.id, updatedData)
+          onSubmit={async (updatedData) => {
+            try {
+              await updateProducto(productoSeleccionado.id, updatedData);
+              setModalAbierto(false);
+              setProductoSeleccionado(null);
+              
+              // Acá activamos la alerta propia en lugar del window.alert
+              setAlertaMensaje("Producto actualizado con éxito");
+
+            } catch (error) {
+              console.error("Error al actualizar el producto:", error);
+              setAlertaMensaje("Hubo un error al actualizar el producto.");
+            }
           }}
           onCancel={() => {
             setModalAbierto(false);
             setProductoSeleccionado(null);
           }}
+        />
+      )}
+
+      {/* Modal de Alerta condicional (se abre cuando alertaMensaje tiene texto) */}
+      {alertaMensaje && (
+        <AlertaSimple 
+          mensaje={alertaMensaje} 
+          onCerrar={() => setAlertaMensaje(null)} 
         />
       )}
     </div>
