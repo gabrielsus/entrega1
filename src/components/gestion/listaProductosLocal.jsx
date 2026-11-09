@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ItemGestion from "./itemGestion";
 import FormProdLocal from "./forms/formProdLocal";
 import updateProducto from "@/API/django/updateproducto";
+import createProducto from "@/API/django/createproducto";
 import AlertaSimple from "../../alertas/alertasimple";
 import IconoAgregar from "@/components/svg/iconoagregar";
 
@@ -74,7 +75,7 @@ const ListaProductosLocal = () => {
         ))}
       </div>
 
-      {modalAbierto && (
+     {modalAbierto && (
         <FormProdLocal
           initialData={productoSeleccionado}
           onSubmit={async (payload) => {
@@ -83,7 +84,7 @@ const ListaProductosLocal = () => {
                 await updateProducto(productoSeleccionado.id, payload);
                 setAlertaMensaje("Producto actualizado con éxito");
               } else {
-                // Lógica de alta para mañana
+                await createProducto(payload);
                 setAlertaMensaje("Producto creado con éxito");
               }
 
