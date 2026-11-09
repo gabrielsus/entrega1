@@ -2,8 +2,9 @@ import traerProductos from "../../API/django/traerproductos";
 import { useEffect, useState } from "react";
 import ItemGestion from "./itemGestion";
 import FormProdLocal from "./forms/formProdLocal";
-import updateProducto from "../../API/django/updateproducto";
+import updateProducto from "@/API/django/updateproducto";
 import AlertaSimple from "../../alertas/alertasimple";
+import IconoAgregar from "@/components/svg/IconoAgregar";
 
 const ListaProductosLocal = () => {
   const [productos, setProductos] = useState([]);
@@ -13,7 +14,6 @@ const ListaProductosLocal = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   
-  // Estado para manejar la apertura y el texto de la alerta propia
   const [alertaMensaje, setAlertaMensaje] = useState(null);
 
   useEffect(() => {
@@ -37,6 +37,11 @@ const ListaProductosLocal = () => {
     setModalAbierto(true);
   };
 
+  const handleCrearNuevo = () => {
+    setProductoSeleccionado(null);
+    setModalAbierto(true);
+  };
+
   const handleDelete = (id) => {
     console.log("Eliminar producto ID:", id);
   };
@@ -46,7 +51,14 @@ const ListaProductosLocal = () => {
 
   return (
     <div className="lista-global">
-      <h2>Envío Local</h2>
+      <div className="header-seccion-local">
+        <h2>Envío Local</h2>
+        <button className="btn-nuevo-producto" onClick={handleCrearNuevo}>
+          <IconoAgregar width={18} height={18} />
+          <span>Nuevo producto</span>
+        </button>
+      </div>
+
       <div className="productos-grid">
         {productos.map((producto) => (
           <ItemGestion
@@ -62,22 +74,28 @@ const ListaProductosLocal = () => {
         ))}
       </div>
 
-      {/* Modal para editar el producto */}
       {modalAbierto && (
         <FormProdLocal
           initialData={productoSeleccionado}
-          onSubmit={async (updatedData) => {
+          onSubmit={async (payload) => {
             try {
-              await updateProducto(productoSeleccionado.id, updatedData);
+              if (productoSeleccionado) {
+                await updateProducto(productoSeleccionado.id, payload);
+                setAlertaMensaje("Producto actualizado con éxito");
+              } else {
+                // Lógica de alta para mañana
+                setAlertaMensaje("Producto creado con éxito");
+              }
+
               setModalAbierto(false);
               setProductoSeleccionado(null);
-              
-              // Acá activamos la alerta propia en lugar del window.alert
-              setAlertaMensaje("Producto actualizado con éxito");
+
+              const dataActualizada = await traerProductos();
+              setProductos(dataActualizada);
 
             } catch (error) {
-              console.error("Error al actualizar el producto:", error);
-              setAlertaMensaje("Hubo un error al actualizar el producto.");
+              console.error("Error al procesar el producto:", error);
+              setAlertaMensaje("Hubo un error al procesar el producto.");
             }
           }}
           onCancel={() => {
@@ -87,7 +105,6 @@ const ListaProductosLocal = () => {
         />
       )}
 
-      {/* Modal de Alerta condicional (se abre cuando alertaMensaje tiene texto) */}
       {alertaMensaje && (
         <AlertaSimple 
           mensaje={alertaMensaje} 

@@ -1,10 +1,18 @@
 import {imagenError} from "../svg/imagenError";
 const svgPlaceholder = imagenError;
 import './nav.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const ItemGestion =({id,description,price,image,shipping,OnEdit, OnDelete})=>{
-    const [imgsrc, setImgsrc] = useState(image || svgPlaceholder);
+    const [imgsrc, setImgsrc] = useState(image ? `${image}?t=${Date.now()}` : svgPlaceholder);
+
+    useEffect(() => {
+        if (image) {
+            setImgsrc(`${image}?t=${Date.now()}`);
+        } else {
+            setImgsrc(svgPlaceholder);
+        }
+    }, [image]);
 
 return(
     <div className="item">

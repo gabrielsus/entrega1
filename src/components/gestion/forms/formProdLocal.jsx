@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDropzone } from "react-dropzone";
+import noImage from "../../../assets/noimage.jpg"; // Ajustá la ruta relativa según dónde esté guardado tu assets respecto a este archivo
+import { subirImagenImgBB } from "@/API/imagebb/upimagebb"; 
 import './formProdLocal.css';
 
 const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
@@ -8,22 +11,87 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
         price: initialData?.price || "",
         shipping: initialData?.shipping || "",
         weight: initialData?.weight || "",
+        category: initialData?.category || "",
+    });
+
+    // Archivo físico seleccionado en el dropzone (File)
+    const [selectedFile, setSelectedFile] = useState(null);
+    // URL para previsualización inmediata en UI
+    const [previewUrl, setPreviewUrl] = useState(initialData?.image || "");
+    // Estado de carga para deshabilitar botones mientras sube
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Liberar memoria del objeto de vista previa si se genera un blob local
+    useEffect(() => {
+        return () => {
+            if (previewUrl && previewUrl.startsWith("blob:")) {
+                URL.revokeObjectURL(previewUrl);
+            }
+        };
+    }, [previewUrl]);
+
+    // Configuración de react-dropzone
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        accept: { 'image/*': [] },
+        maxFiles: 1,
+        multiple: false,
+        onDrop: (acceptedFiles) => {
+            if (acceptedFiles && acceptedFiles.length > 0) {
+                const file = acceptedFiles[0];
+                setSelectedFile(file);
+                setPreviewUrl(URL.createObjectURL(file));
+            }
+        }
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit(formData);
+        setIsSubmitting(true);
+
+        try {
+            let finalImageUrl = formData.image;
+
+            // Si seleccionó un archivo nuevo, subir a ImgBB
+            if (selectedFile) {
+                try {
+                    const urlCruda = await subirImagenImgBB(selectedFile);
+                    
+                    if (!urlCruda) {
+                        throw new Error("ImgBB no devolvió una URL válida.");
+                    }
+                    
+                    finalImageUrl = `${urlCruda}?t=${Date.now()}`;
+                } catch (imgError) {
+                    console.error("Fallo en la subida a ImgBB:", imgError);
+                    alert("No se pudo subir la imagen a ImgBB. Verificá tu conexión e intentá de nuevo.");
+                    setIsSubmitting(false);
+                    return; 
+                }
+            }
+
+            const payload = {
+                ...formData,
+                image: finalImageUrl
+            };
+
+            await onSubmit(payload);
+        } catch (error) {
+            console.error("Error al procesar el formulario:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
-        /* >>> AQUÍ ESTÁ EL CAMBIO: Agregamos este div con la clase modal-backdrop <<< */
         <div className="modal-backdrop">
             <form onSubmit={handleSubmit} className="form-prod-local">
+                <h3>{initialData ? "Editar Producto" : "Nuevo Producto"}</h3>
+                
                 <div className="form-group">
                     <label htmlFor="description">Descripción:</label>
                     <input
@@ -32,28 +100,65 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
+                        required
                     />
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="image">Imagen:</label>
+                    <label htmlFor="category">Categoría:</label>
                     <input
                         type="text"
-                        id="image"
-                        name="image"
-                        value={formData.image}
+                        id="category"
+                        name="category"
+                        value={formData.category}
                         onChange={handleChange}
                     />
                 </div>
+
+                {/* Área de Dropzone y Vista Previa */}
+                <div className="form-group">
+                    <label>Imagen del Producto:</label>
+                    
+                    <div className="dropzone-container" {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        
+                        <div className="preview-box">
+                            {previewUrl ? (
+                                <img 
+                                    src={previewUrl} 
+                                    alt="Vista previa" 
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        setPreviewUrl("");
+                                    }}
+                                />
+                            ) : (
+                                <div className="fallback-image">
+                                    <img src={noImage} alt="Sin imagen" className="img-placeholder" />
+                                </div>
+                            )}
+                        </div>
+
+                        <p className="dropzone-text">
+                            {isDragActive 
+                                ? "Soltá la imagen acá..." 
+                                : "Arrastrá una imagen o hacé clic para seleccionar"}
+                        </p>
+                    </div>
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="price">Precio:</label>
                     <input
-                        type="text"
+                        type="number"
                         id="price"
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
+                        required
                     />
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="shipping">Envío:</label>
                     <input
@@ -64,6 +169,7 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                         onChange={handleChange}
                     />
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="weight">Peso:</label>
                     <input
@@ -74,9 +180,14 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                         onChange={handleChange}
                     />
                 </div>
+
                 <div className="modal-botones">
-                    <button type="submit" >Guardar</button>
-                    <button type="button"  onClick={onCancel}>Cancelar</button>
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Guardando..." : "Guardar"}
+                    </button>
+                    <button type="button" onClick={onCancel} disabled={isSubmitting}>
+                        Cancelar
+                    </button>
                 </div>
             </form>
         </div>

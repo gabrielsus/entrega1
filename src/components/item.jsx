@@ -7,8 +7,8 @@ import { imagenError } from "./svg/imagenError";
 
 const svgPlaceholder = imagenError;
 
-// 1. Agregamos 'shipping' en las props que recibe el componente
-const Item = ({ id, description, price, image, shipping, favoritoInicial }) => {
+// 1. Añadimos 'category' en las props que recibe el componente
+const Item = ({ id, description, price, image, category, favoritoInicial }) => {
     const [imgsrc, setImgsrc] = useState(image || svgPlaceholder);
     const [esFavorito, setEsFavorito] = useState(favoritoInicial);
     const [fueAgregado, setFueAgregado] = useState(false);
@@ -20,8 +20,8 @@ const Item = ({ id, description, price, image, shipping, favoritoInicial }) => {
     };
 
     const handleAgregarAlCarrito = () => {
-        // 2. Incluimos el shipping dentro del objeto que viaja al carrito
-        addToCart({ id, description, price, image, shipping }, 1);
+        // Si necesitás mandar la categoría al carrito también, la incluís acá
+        addToCart({ id, description, price, image, category }, 1);
 
         setFueAgregado(true);
         setTimeout(() => {
@@ -31,23 +31,21 @@ const Item = ({ id, description, price, image, shipping, favoritoInicial }) => {
 
     return (
         <div className="item">
+            {/* 2. Opcional: Mostrar la categoría como una etiqueta arriba o donde prefieras */}
+            {category && <span className="item-category-badge">{category}</span>}
+
             <img 
                 src={imgsrc} 
                 alt={description} 
                 className='item-image' 
                 onError={() => setImgsrc(svgPlaceholder)}
             />
+            
             <h4 className="item-description">{description}</h4>
+            
             <p className="item-price">
                 ${price ? Number(price).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'}
             </p>
-            
-            {/* 3. Renderizado opcional del envío en la tarjeta */}
-            {shipping ? (
-                <span className="item-shipping">Envío: ${shipping}</span>
-            ) : (
-                <span className="item-shipping gratis">Envío gratis</span>
-            )}
             
             <button onClick={handleFavoritoClick} className="btn-favorito">
                 {esFavorito ? '❤️' : '🤍'}
