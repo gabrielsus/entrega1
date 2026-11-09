@@ -4,7 +4,7 @@ import ItemGestion from "./itemGestion";
 import FormProdLocal from "./forms/formProdLocal";
 import updateProducto from "@/API/django/updateproducto";
 import AlertaSimple from "../../alertas/alertasimple";
-import IconoAgregar from "@/components/svg/Iconoagregar";
+import IconoAgregar from "@/components/svg/iconoagregar";
 
 const ListaProductosLocal = () => {
   const [productos, setProductos] = useState([]);
