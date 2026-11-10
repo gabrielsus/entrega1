@@ -4,6 +4,7 @@ import ItemGestion from "./itemGestion";
 import FormProdLocal from "./forms/formProdLocal";
 import updateProducto from "@/API/django/updateproducto";
 import createProducto from "@/API/django/createproducto";
+import deleteProducto from "@/API/django/deleteproducto"; // <--- Importamos deleteProducto
 import AlertaSimple from "../../alertas/alertasimple";
 import IconoAgregar from "@/components/svg/iconoagregar";
 
@@ -14,6 +15,7 @@ const ListaProductosLocal = () => {
   
   const [modalAbierto, setModalAbierto] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const [modoEliminar, setModoEliminar] = useState(false); // <--- Estado para saber si estamos borrando
   
   const [alertaMensaje, setAlertaMensaje] = useState(null);
 
@@ -35,16 +37,21 @@ const ListaProductosLocal = () => {
   const handleEdit = (id) => {
     const productoAEditar = productos.find((producto) => producto.id === id);
     setProductoSeleccionado(productoAEditar);
+    setModoEliminar(false); // Nos aseguramos que no esté en modo eliminar
     setModalAbierto(true);
   };
 
   const handleCrearNuevo = () => {
     setProductoSeleccionado(null);
+    setModoEliminar(false); // Nos aseguramos que no esté en modo eliminar
     setModalAbierto(true);
   };
 
   const handleDelete = (id) => {
-    console.log("Eliminar producto ID:", id);
+    const productoAEliminar = productos.find((producto) => producto.id === id);
+    setProductoSeleccionado(productoAEliminar);
+    setModoEliminar(true); // <--- Activamos el modo eliminar para el modal
+    setModalAbierto(true);
   };
 
   if (loading) return <div>Cargando productos...</div>;
@@ -78,9 +85,13 @@ const ListaProductosLocal = () => {
      {modalAbierto && (
         <FormProdLocal
           initialData={productoSeleccionado}
+          modoEliminar={modoEliminar} // <--- Pasamos esta prop para que el formulario sepa si pinta rojo y cambia botones
           onSubmit={async (payload) => {
             try {
-              if (productoSeleccionado) {
+              if (modoEliminar) {
+                await deleteProducto(productoSeleccionado.id);
+                setAlertaMensaje("Producto eliminado con éxito");
+              } else if (productoSeleccionado) {
                 await updateProducto(productoSeleccionado.id, payload);
                 setAlertaMensaje("Producto actualizado con éxito");
               } else {
@@ -90,6 +101,7 @@ const ListaProductosLocal = () => {
 
               setModalAbierto(false);
               setProductoSeleccionado(null);
+              setModoEliminar(false);
 
               const dataActualizada = await traerProductos();
               setProductos(dataActualizada);
@@ -102,6 +114,7 @@ const ListaProductosLocal = () => {
           onCancel={() => {
             setModalAbierto(false);
             setProductoSeleccionado(null);
+            setModoEliminar(false);
           }}
         />
       )}

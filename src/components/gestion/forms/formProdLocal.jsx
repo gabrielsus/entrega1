@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import noImage from "../../../assets/noimage.jpg"; // Ajustá la ruta relativa según dónde esté guardado tu assets respecto a este archivo
+import noImage from "../../../assets/noimage.jpg"; 
 import { subirImagenImgBB } from "@/API/imagebb/upimagebb"; 
 import './formProdLocal.css';
 
-const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
+const FormProdLocal = ({ initialData, modoEliminar, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState({
         description: initialData?.description || "",
         image: initialData?.image || "",
@@ -14,14 +14,10 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
         category: initialData?.category || "",
     });
 
-    // Archivo físico seleccionado en el dropzone (File)
     const [selectedFile, setSelectedFile] = useState(null);
-    // URL para previsualización inmediata en UI
     const [previewUrl, setPreviewUrl] = useState(initialData?.image || "");
-    // Estado de carga para deshabilitar botones mientras sube
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Liberar memoria del objeto de vista previa si se genera un blob local
     useEffect(() => {
         return () => {
             if (previewUrl && previewUrl.startsWith("blob:")) {
@@ -30,11 +26,11 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
         };
     }, [previewUrl]);
 
-    // Configuración de react-dropzone
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: { 'image/*': [] },
         maxFiles: 1,
         multiple: false,
+        disabled: modoEliminar, // Si estamos borrando, desactivamos el dropzone
         onDrop: (acceptedFiles) => {
             if (acceptedFiles && acceptedFiles.length > 0) {
                 const file = acceptedFiles[0];
@@ -54,9 +50,14 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
         setIsSubmitting(true);
 
         try {
+            // Si está en modo eliminar, no subimos nada, solo ejecutamos el submit (que disparará el delete)
+            if (modoEliminar) {
+                await onSubmit();
+                return;
+            }
+
             let finalImageUrl = formData.image;
 
-            // Si seleccionó un archivo nuevo, subir a ImgBB
             if (selectedFile) {
                 try {
                     const urlCruda = await subirImagenImgBB(selectedFile);
@@ -90,9 +91,20 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
     return (
         <div className="modal-backdrop">
             <form onSubmit={handleSubmit} className="form-prod-local">
-                <h3>{initialData ? "Editar Producto" : "Nuevo Producto"}</h3>
+                {/* Título dinámico en rojo si es eliminación */}
+                <h3 style={modoEliminar ? { color: '#e57373' } : {}}>
+                    {modoEliminar 
+                        ? "Confirmación de elemento a eliminar" 
+                        : (initialData ? "Editar Producto" : "Nuevo Producto")}
+                </h3>
                 
-                <div className="form-group">
+                {modoEliminar && (
+                    <div style={{ marginBottom: '1rem', color: '#2d3748', fontSize: '0.95rem' }}>
+                        ¿Estás seguro de que querés eliminar el producto <b>{formData.description}</b>? Esta acción no se puede deshacer.
+                    </div>
+                )}
+
+                <div className="form-group" style={modoEliminar ? { opacity: 0.6, pointerEvents: 'none' } : {}}>
                     <label htmlFor="description">Descripción:</label>
                     <input
                         type="text"
@@ -100,11 +112,12 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
+                        disabled={modoEliminar}
                         required
                     />
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={modoEliminar ? { opacity: 0.6, pointerEvents: 'none' } : {}}>
                     <label htmlFor="category">Categoría:</label>
                     <input
                         type="text"
@@ -112,15 +125,16 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
+                        disabled={modoEliminar}
                     />
                 </div>
 
-                {/* Área de Dropzone y Vista Previa */}
+                {/* Área de Dropzone y Vista Previa (Se oculta o deshabilita en modo eliminar si preferís, o se deja estática) */}
                 <div className="form-group">
                     <label>Imagen del Producto:</label>
                     
-                    <div className="dropzone-container" {...getRootProps()}>
-                        <input {...getInputProps()} />
+                    <div className="dropzone-container" {...(modoEliminar ? {} : getRootProps())} style={modoEliminar ? { cursor: 'default' } : {}}>
+                        {!modoEliminar && <input {...getInputProps()} />}
                         
                         <div className="preview-box">
                             {previewUrl ? (
@@ -139,15 +153,17 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                             )}
                         </div>
 
-                        <p className="dropzone-text">
-                            {isDragActive 
-                                ? "Soltá la imagen acá..." 
-                                : "Arrastrá una imagen o hacé clic para seleccionar"}
-                        </p>
+                        {!modoEliminar && (
+                            <p className="dropzone-text">
+                                {isDragActive 
+                                    ? "Soltá la imagen acá..." 
+                                    : "Arrastrá una imagen o hacé clic para seleccionar"}
+                            </p>
+                        )}
                     </div>
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={modoEliminar ? { opacity: 0.6, pointerEvents: 'none' } : {}}>
                     <label htmlFor="price">Precio:</label>
                     <input
                         type="number"
@@ -155,11 +171,12 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
+                        disabled={modoEliminar}
                         required
                     />
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={modoEliminar ? { opacity: 0.6, pointerEvents: 'none' } : {}}>
                     <label htmlFor="shipping">Envío:</label>
                     <input
                         type="text"
@@ -167,10 +184,11 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                         name="shipping"
                         value={formData.shipping}
                         onChange={handleChange}
+                        disabled={modoEliminar}
                     />
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={modoEliminar ? { opacity: 0.6, pointerEvents: 'none' } : {}}>
                     <label htmlFor="weight">Peso:</label>
                     <input
                         type="text"
@@ -178,12 +196,19 @@ const FormProdLocal = ({ initialData, onSubmit, onCancel }) => {
                         name="weight"
                         value={formData.weight}
                         onChange={handleChange}
+                        disabled={modoEliminar}
                     />
                 </div>
 
                 <div className="modal-botones">
-                    <button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Guardando..." : "Guardar"}
+                    <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        style={modoEliminar ? { backgroundColor: '#e57373' } : {}}
+                    >
+                        {isSubmitting 
+                            ? "Procesando..." 
+                            : (modoEliminar ? "Eliminar Definitivamente" : "Guardar")}
                     </button>
                     <button type="button" onClick={onCancel} disabled={isSubmitting}>
                         Cancelar
