@@ -2,6 +2,7 @@ import './gestion.css';
 import logo from '../../assets/e-shop.jpg'; 
 import { useState } from 'react';
 import ListaProductosLocal from './listaProductosLocal';
+import ListaProductosInternacional from './listaProductosInternacional';
 const Gestion = () => {
   const [pestanaActiva, setPestanaActiva] = useState('productos');
   return (
@@ -37,8 +38,8 @@ const Gestion = () => {
         )}
         {pestanaActiva === 'productosInt' && (
           <div className="gestion-productos">
-            <h2>Productos Envío Internacional</h2>
-            <p>Contenido de la pestaña de productos de envío internacional</p>
+            <h2>Productos</h2>
+            <ListaProductosInternacional />
           </div>
         )}
         {pestanaActiva === 'cupones' && (
