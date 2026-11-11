@@ -2,9 +2,12 @@ import traerProductos from "@/API/firebase/traerproductos";
 import { useEffect, useState } from "react";
 import ItemGestion from "./itemGestion";
 import FormProdLocal from "./forms/formProdLocal";
-import createProductos from "@/API/firebase/createproducto";
+import createProducto from "@/API/firebase/createproducto";
+import updateProducto from "@/API/firebase/updateproducto";
+import deleteProducto from "@/API/firebase/deleteproducto";
 import AlertaSimple from "../../alertas/alertasimple.jsx";
 import IconoAgregar from "@/components/svg/iconoagregar";
+
 
 const ListaProductosInternacional = () => {
   const [productos, setProductos] = useState([]);
@@ -88,11 +91,11 @@ const ListaProductosInternacional = () => {
           onSubmit={async (payload) => {
             try {
               if (modoEliminar) {
-                // El delete lo sumamos enseguida
-                console.log("Falta implementar delete en Firebase para el ID:", productoSeleccionado.id);
+                await deleteProducto(productoSeleccionado.id);
+                setAlertaMensaje("Producto internacional eliminado con éxito");
               } else if (productoSeleccionado) {
-                // El update lo sumamos enseguida
-                console.log("Falta implementar update en Firebase para el ID:", productoSeleccionado.id);
+                await updateProducto(productoSeleccionado.id, payload);
+                setAlertaMensaje("Producto internacional actualizado con éxito");
               } else {
                 await createProducto(payload);
                 setAlertaMensaje("Producto internacional creado con éxito");

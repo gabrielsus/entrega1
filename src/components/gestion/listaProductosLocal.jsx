@@ -15,7 +15,7 @@ const ListaProductosLocal = () => {
   
   const [modalAbierto, setModalAbierto] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  const [modoEliminar, setModoEliminar] = useState(false); // <--- Estado para saber si estamos borrando
+  const [modoEliminar, setModoEliminar] = useState(false);
   
   const [alertaMensaje, setAlertaMensaje] = useState(null);
 
