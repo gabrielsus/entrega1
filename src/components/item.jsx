@@ -7,8 +7,7 @@ import { imagenError } from "./svg/imagenError";
 
 const svgPlaceholder = imagenError;
 
-// 1. Añadimos 'category' en las props que recibe el componente
-const Item = ({ id, description, price, image, category, favoritoInicial }) => {
+const Item = ({ id, description, price, image, category, favoritoInicial, esInternacional = false }) => {
     const [imgsrc, setImgsrc] = useState(image || svgPlaceholder);
     const [esFavorito, setEsFavorito] = useState(favoritoInicial);
     const [fueAgregado, setFueAgregado] = useState(false);
@@ -20,7 +19,6 @@ const Item = ({ id, description, price, image, category, favoritoInicial }) => {
     };
 
     const handleAgregarAlCarrito = () => {
-        // Si necesitás mandar la categoría al carrito también, la incluís acá
         addToCart({ id, description, price, image, category }, 1);
 
         setFueAgregado(true);
@@ -31,7 +29,6 @@ const Item = ({ id, description, price, image, category, favoritoInicial }) => {
 
     return (
         <div className="item">
-            {/* 2. Opcional: Mostrar la categoría como una etiqueta arriba o donde prefieras */}
             {category && <span className="item-category-badge">{category}</span>}
 
             <img 
@@ -51,7 +48,12 @@ const Item = ({ id, description, price, image, category, favoritoInicial }) => {
                 {esFavorito ? '❤️' : '🤍'}
             </button>
             
-            <Link to={`/producto/${id}`} className="btn-detalle" title="Ver detalles del producto">
+            {/* Si es internacional, va a la ruta de firebase; sino, a la de Django */}
+            <Link 
+                to={esInternacional ? `/producto-internacional/${id}` : `/producto/${id}`} 
+                className="btn-detalle" 
+                title="Ver detalles del producto"
+            >
                 <span className="flecha-detalle">👁</span>
             </Link>
             

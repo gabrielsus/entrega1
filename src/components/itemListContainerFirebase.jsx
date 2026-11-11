@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './nav.css';
-import {getProducts} from '../API/firebase/firebaseservice.js';
+import { getProducts } from '../API/firebase/firebaseservice.js';
 import Item from './item.jsx';
 import enchufe from '../assets/enchufe.png';
 import Reload from './svg/reload';
@@ -14,10 +14,10 @@ const ItemListContainerFirebase = () => {
         setLoading(true);
         setError(null);
         try {
-            const data = await getProducts(); // Cambiado a la función de Firebase
+            const data = await getProducts(); // Función de Firebase
             const productosMapeados = data.map(prod => ({
                 ...prod,
-                shipping: prod.shipping ?? null // Aseguramos que shipping tenga un valor por defecto si no está presente
+                shipping: prod.shipping ?? null
             }));
             setProductos(productosMapeados);
         } catch (err) {
@@ -55,8 +55,9 @@ const ItemListContainerFirebase = () => {
                             description={prod.description}
                             price={prod.price}
                             image={prod.image}
-                            shipping={prod.shipping} // Pasamos el valor de shipping al componente Item
+                            shipping={prod.shipping}
                             favoritoInicial={false}
+                            esInternacional={true} // <--- ¡Acá está la clave para que vaya al detalle de Firebase!
                         />
                     ))}
                 </div>

@@ -5,38 +5,45 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* Oscurece el fondo */
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  padding: 1rem; /* Añadido para que no pegue contra los bordes en pantallas chicas */
+  padding: 0.5rem;
   box-sizing: border-box;
 }
 
-/* 2. La caja blanca principal del formulario (Sólida, opaca y centrada) */
+/* 2. La caja blanca principal del formulario (Más compacta arriba y entre elementos) */
 .form-prod-local, 
 .modal-contenido {
   background-color: #eaf5fd !important;
   opacity: 1 !important;
-  padding: 2rem;
+  padding: 1.25rem 1.75rem; /* Padding reducido arriba y abajo para ganar espacio */
   border-radius: 12px;
   width: 100%;
   max-width: 450px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; /* Achicado un poquito para que entre mejor */
+  gap: 0.4rem; /* Elementos más juntos para evitar el scroll vertical */
   box-sizing: border-box;
   position: relative;
   z-index: 10000;
 
-  /* --- CLAVES PARA QUE NO SE CORTE EN MONITORES CHICOS --- */
-  max-height: 90vh;     /* Nunca supera el 90% de la altura visible */
-  overflow-y: auto;     /* Activa scroll interno si el contenido es más alto */
+  max-height: 95vh;     
+  overflow-y: auto;     
 }
 
-/* 3. Inputs y etiquetas prolijos */
+/* Ajuste específico para el título principal y que no tenga margen extra arriba */
+.form-prod-local h3,
+.modal-contenido h3 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  font-size: 1.25rem;
+}
+
+/* 3. Inputs, Etiquetas y Selects prolijos */
 .form-prod-local label,
 .modal-contenido label {
   display: block !important;
@@ -44,18 +51,32 @@
   width: 100% !important;
   color: #117efb;
   font-weight: 600;
+  margin-bottom: 0.1rem;
 }
 
+/* ¡Acá sumamos el select para que tenga el mismo ancho y diseño que los input! */
 .form-prod-local input,
-.modal-contenido input {
+.modal-contenido input,
+.form-prod-local select,
+.modal-contenido select {
   width: 100%;
-  padding: 0.5rem 0.8rem; /* Ligeramente más compacto */
+  padding: 0.45rem 0.8rem; 
   font-size: 0.95rem;
   border: 1px solid #cbd5e0;
   border-radius: 6px;
   background-color: #ffffff;
   color: #2d3748;
   box-sizing: border-box;
+  height: 38px; /* Altura uniforme */
+}
+
+.form-prod-local select {
+  cursor: pointer;
+}
+
+/* Espaciado compacto entre cada grupo de campo */
+.form-prod-local .form-group {
+  margin-bottom: 0.35rem;
 }
 
 /* 4. Los botones en paralelo */
@@ -65,12 +86,12 @@
   justify-content: space-between !important;
   gap: 12px;
   width: 100%;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .modal-botones button {
   flex: 1;
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 0.95rem;
   font-weight: 600;
   border: none;
@@ -92,7 +113,7 @@
 .dropzone-container {
   border: 2px dashed #cbd5e0;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -108,8 +129,8 @@
 }
 
 .preview-box {
-  width: 110px;
-  height: 110px;
+  width: 90px;
+  height: 90px;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
@@ -117,7 +138,7 @@
   justify-content: center;
   background-color: #f7fafc;
   border: 1px solid #e2e8f0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .preview-box img {
@@ -140,7 +161,6 @@
   fill: #a0aec0;
 }
 
-/* Estilo para la imagen bitmap placeholder (noimage.jpg) */
 .fallback-image .img-placeholder {
   width: 100%;
   height: 100%;
@@ -148,8 +168,33 @@
 }
 
 .dropzone-text {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #4a5568;
   margin: 0;
   text-align: center;
+}
+
+/* --- ESTILOS PARA MODO ELIMINAR / DESACTIVADO --- */
+
+.titulo-eliminar {
+  color: #e57373 !important;
+}
+
+.texto-alerta-eliminar {
+  margin-bottom: 0.5rem;
+  color: #2d3748;
+  font-size: 0.95rem;
+}
+
+.form-group-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.dropzone-disabled {
+  cursor: default !important;
+}
+
+.btn-eliminar-submit {
+  background-color: #e57373 !important;
 }

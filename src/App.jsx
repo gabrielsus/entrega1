@@ -6,6 +6,7 @@ import Cart from './components/cart/cart'
 import DetalleProducto from './components/detalleProducto';
 import ItemListContainerFirebase from './components/itemListContainerFirebase';
 import Gestion from './components/gestion/gestion'; // Importamos el componente Gestion
+import DetalleProductoFirebase from './components/DetalleProductoFirebase'; // Importamos el componente DetalleProductoFirebase
 function App() {
   return (
       <Routes>
@@ -17,6 +18,8 @@ function App() {
           <Route path="/carrito" element={<Cart />} />
           {/* Ruta dinámica para el detalle del producto (usando el ID) */}
           <Route path="/producto/:id" element={<DetalleProducto />} />
+          {/* NUEVA RUTA para productos internacionales de Firebase */}
+          <Route path="/producto-internacional/:id" element={<DetalleProductoFirebase />} />
           {/* Ruta para la página de gestión */}
           
         </Route>

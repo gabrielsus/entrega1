@@ -1,7 +1,7 @@
 import traerProductos from "@/API/firebase/traerproductos";
 import { useEffect, useState } from "react";
 import ItemGestion from "./itemGestion";
-import FormProdLocal from "./forms/formProdLocal";
+import FormProdInternacional from "./forms/formProdInternacional";
 import createProducto from "@/API/firebase/createproducto";
 import updateProducto from "@/API/firebase/updateproducto";
 import deleteProducto from "@/API/firebase/deleteproducto";
@@ -85,7 +85,7 @@ const ListaProductosInternacional = () => {
       </div>
 
      {modalAbierto && (
-        <FormProdLocal
+        <FormProdInternacional
           initialData={productoSeleccionado}
           modoEliminar={modoEliminar}
           onSubmit={async (payload) => {
