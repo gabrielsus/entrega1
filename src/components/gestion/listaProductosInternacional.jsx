@@ -1,7 +1,7 @@
 import traerProductos from "@/API/firebase/traerproductos";
 import { useEffect, useState } from "react";
 import ItemGestion from "./itemGestion";
-import FormProdLocal from "./forms/FormProdLocal";
+import FormProdLocal from "./forms/formProdLocal";
 import createProductos from "@/API/firebase/createproducto";
 import AlertaSimple from "../../alertas/alertasimple.jsx";
 import IconoAgregar from "@/components/svg/iconoagregar";
