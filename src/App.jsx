@@ -6,8 +6,17 @@ import Cart from './components/cart/cart'
 import DetalleProducto from './components/detalleProducto';
 import ItemListContainerFirebase from './components/itemListContainerFirebase';
 import Gestion from './components/gestion/gestion'; // Importamos el componente Gestion
-import DetalleProductoFirebase from './components/DetalleProductoFirebase'; // Importamos el componente DetalleProductoFirebase
+import DetalleProductoFirebase from './components/DetalleProductoFirebase'; // Importamos el componente DetalleProductoFirebase         
+import { useAuth } from './components/auth/authcontext.jsx';
+import Login from './components/auth/login.jsx';
 function App() {
+  const {user,loading} = useAuth();
+  if (loading) {
+    return <div>Cargando...</div>; // O un spinner de carga
+  }
+  if (!user) {
+    return <Login />; // Redirige al login si no hay usuario
+  }
   return (
       <Routes>
         {/* El Layout es el único que se encarga de estructurar la página */}
