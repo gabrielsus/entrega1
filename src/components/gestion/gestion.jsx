@@ -3,19 +3,28 @@ import logo from '../../assets/e-shop.jpg';
 import { useState } from 'react';
 import ListaProductosLocal from './listaProductosLocal';
 import ListaProductosInternacional from './listaProductosInternacional';
+import UserBar from '@/components/userbar'; // Ajustá la ruta según tu estructura de carpetas
+
 const Gestion = () => {
   const [pestanaActiva, setPestanaActiva] = useState('productos');
+
   return (
     <div className="gestion-container">
       <div className="gestion-encabezado">
         <div className="gestion-izquierda">
-        <img className="gestion-logo" src={logo} alt="Logo" />
+          <img className="gestion-logo" src={logo} alt="Logo" />
           <div className="gestion-textos">
-          <h1 className="gestion-titulo">Bienvenidos a la página de gestión</h1>
-          <h3 className="gestion-subtitulo">Administración de productos y cupones</h3>
+            <h1 className="gestion-titulo">Bienvenidos a la página de gestión</h1>
+            <h3 className="gestion-subtitulo">Administración de productos y cupones</h3>
+          </div>
+        </div>
+        
+        {/* Agregamos la barra de usuario en la esquina superior derecha */}
+        <div className="gestion-derecha">
+          <UserBar />
         </div>
       </div>
-    </div>
+
       {/* // Gestión de tabs */}
       <div className="gestion-tabs">
         <button className={"tab-btn " + (pestanaActiva === 'productos' ? 'activa' : '')} onClick={() => setPestanaActiva('productos')}>
@@ -28,7 +37,8 @@ const Gestion = () => {
           Cupones
         </button>
       </div>
-      {/* //GESTIÓN CONTENIDO */}
+
+      {/* // GESTIÓN CONTENIDO */}
       <div className="gestion-contenido">
         {pestanaActiva === 'productos' && (
           <div className="gestion-productos">
@@ -50,7 +60,7 @@ const Gestion = () => {
         )}
       </div>
     </div>
-);
+  );
 };
 
 export default Gestion;

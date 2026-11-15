@@ -1,7 +1,8 @@
 import logo from '../assets/e-shop.jpg'; 
 import bolsa from '../assets/bolsa.png';
-import './header.css'
+import './header.css';
 import Nav from './nav';
+import UserBar from './userbar'; // Importamos la userbar en minúscula
 
 const Header = () => {
     return (
@@ -11,12 +12,12 @@ const Header = () => {
                     <img src={logo} alt="E-SHOP ARGENTINA" />
                     <h1>E-SHOP ARGENTINA</h1>           
                 </div>
-                {/* La bolsa chiquita a la derecha */}
                 <img src={bolsa} alt="Bolsa" className="bolsa-chiquita" />
             </div>
             <Nav />
+            <UserBar /> {/* Ubicada de forma sutil justo debajo de la nav bar */}
         </div>
-    )
-}
+    );
+};
 
-export default Header
+export default Header;

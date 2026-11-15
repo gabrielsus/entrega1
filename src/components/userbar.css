@@ -1,0 +1,143 @@
+.user-bar-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    font-family: inherit;
+}
+
+.user-bar-container {
+    position: relative;
+    padding: 6px 24px;
+}
+
+.user-bar-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    user-select: none;
+}
+
+.user-bar-profile:hover {
+    background-color: #f3f4f6;
+}
+
+.user-bar-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.user-bar-arrow {
+    font-size: 10px;
+    color: #6b7280;
+    transition: transform 0.2s ease;
+}
+
+.user-bar-arrow.open {
+    transform: rotate(180deg);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 24px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    padding: 16px;
+    z-index: 50;
+}
+
+.dropdown-user-info {
+    margin-bottom: 4px;
+}
+
+.dropdown-email {
+    font-size: 13px;
+    color: #4b5563;
+    margin: 0;
+    word-break: break-all;
+}
+
+.dropdown-badge {
+    font-size: 11px;
+    background-color: #e0f2fe;
+    color: #0369a1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.dropdown-separator {
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 12px 0;
+}
+
+.dropdown-section h4 {
+    font-size: 13px;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.dropdown-input {
+    width: 100%;
+    padding: 7px 10px;
+    margin-bottom: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.dropdown-input:focus {
+    border-color: #2563eb;
+}
+
+.dropdown-btn-primary {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    width: 100%;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.dropdown-btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.dropdown-btn-danger {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 7px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    width: 100%;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.dropdown-btn-danger:hover {
+    background-color: #fee2e2;
+}
