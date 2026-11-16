@@ -1,16 +1,15 @@
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, updatePassword,getIdToken,EmailAuthProvider,reauthenticateWithCredential } from 'firebase/auth';
-import { auth, db } from '@/API/firebase/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
+import { auth } from '@/API/firebase/firebase';
+import { getProfileByUid, ROLES } from '@/API/firebase/firebaseservice';
 import { createContext, useContext, useEffect, useState } from 'react';
+
 const AuthContext = createContext(null);
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-
     if (context === null) {
         throw new Error('useAuth debe usarse dentro de un AuthProvider.');
     }
-
     return context;
 };
 
@@ -21,23 +20,13 @@ const cambiarPassword = async (passwordActual, nuevaPassword) => {
     }
 
     try {
-        // 1. Forzamos la renovación del token actual con el servidor de Google
         await user.getIdToken(true);
-
-        // 2. Creamos la credencial con la contraseña actual que tipeaste
         const credencial = EmailAuthProvider.credential(user.email, passwordActual);
-
-        // 3. Reautenticamos con el token ya refrescado
         await reauthenticateWithCredential(user, credencial);
-
-        // 4. Si todo OK, actualizamos la contraseña
         await updatePassword(user, nuevaPassword);
-        
         return { success: true, message: "Contraseña actualizada con éxito" };
     } catch (error) {
         console.error("Error al cambiar la contraseña:", error);
-        console.error("Código de error de Firebase:", error.code);
-        console.error("Mensaje completo:", error.message);
         throw new Error(error.message || "Error al cambiar la contraseña");
     }
 };
@@ -61,9 +50,10 @@ export const AuthProvider = ({ children }) => {
             }
 
             try {
-                const docSnap = await getDoc(doc(db, 'usuarios', currentUser.uid));
+                // Apuntamos a la colección 'profiles' a través de firebaseservice
+                const perfil = await getProfileByUid(currentUser.uid);
                 if (request === latestRequest) {
-                    setRole(docSnap.exists() ? docSnap.data().rol : 'cliente');
+                    setRole(perfil ? perfil.rol : ROLES.CLIENTE);
                 }
             } catch (error) {
                 if (request === latestRequest) {
@@ -91,8 +81,10 @@ export const AuthProvider = ({ children }) => {
         return signOut(auth);
     };
 
+    const esAdmin = role === ROLES.ADMIN;
+
     return (
-        <AuthContext.Provider value={{ user, role, login, logout, loading,cambiarPassword }}>
+        <AuthContext.Provider value={{ user, role, esAdmin, login, logout, loading, cambiarPassword }}>
             {children}
         </AuthContext.Provider>
     );

@@ -3,6 +3,7 @@ import logo from '../../assets/e-shop.jpg';
 import { useState } from 'react';
 import ListaProductosLocal from './listaProductosLocal';
 import ListaProductosInternacional from './listaProductosInternacional';
+import ListaUsuarios from './listausuarios'; // Asegúrate de que la ruta sea correcta
 import UserBar from '@/components/userbar'; // Ajustá la ruta según tu estructura de carpetas
 
 const Gestion = () => {
@@ -14,8 +15,8 @@ const Gestion = () => {
         <div className="gestion-izquierda">
           <img className="gestion-logo" src={logo} alt="Logo" />
           <div className="gestion-textos">
-            <h1 className="gestion-titulo">Bienvenidos a la página de gestión</h1>
-            <h3 className="gestion-subtitulo">Administración de productos y cupones</h3>
+            <h2 className="gestion-titulo">Bienvenidos a la página de gestión</h2>
+            <h3 className="gestion-subtitulo">Administración de productos y usuarios</h3>
           </div>
         </div>
         
@@ -33,8 +34,8 @@ const Gestion = () => {
         <button className={"tab-btn " + (pestanaActiva === 'productosInt' ? 'activa' : '')} onClick={() => setPestanaActiva('productosInt')}>
           Productos Envío Internacional
         </button>
-        <button className={"tab-btn " + (pestanaActiva === 'cupones' ? 'activa' : '')} onClick={() => setPestanaActiva('cupones')}>
-          Cupones
+        <button className={"tab-btn " + (pestanaActiva === 'usuarios' ? 'activa' : '')} onClick={() => setPestanaActiva('usuarios')}>
+          Usuarios
         </button>
       </div>
 
@@ -52,10 +53,9 @@ const Gestion = () => {
             <ListaProductosInternacional />
           </div>
         )}
-        {pestanaActiva === 'cupones' && (
-          <div className="gestion-cupones">
-            <h2>Cupones</h2>
-            <p>Contenido de la pestaña de cupones</p>
+        {pestanaActiva === 'usuarios' && (
+          <div className="gestion-usuarios">
+            <ListaUsuarios />
           </div>
         )}
       </div>
