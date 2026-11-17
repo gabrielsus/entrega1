@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { getProfiles, deleteProfile, updateProfile, createUserProfile } from "@/API/firebase/firebaseservice.js";
 import { auth } from '@/API/firebase/firebase.js';
-import './ListaUsuarios.css';
+import './listausuarios.css';
 
 const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
