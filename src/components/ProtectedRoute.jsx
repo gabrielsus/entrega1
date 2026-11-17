@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from './authcontext';
+import { useAuth } from '@/components/auth/authcontext';
 import './ProtectedRoute.css'; 
 
 const ProtectedRoute = () => {
@@ -14,7 +14,7 @@ const ProtectedRoute = () => {
   }
 
   if (!user || !esAdmin) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

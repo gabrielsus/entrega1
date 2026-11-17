@@ -9,6 +9,7 @@ import Gestion from './components/gestion/gestion'; // Importamos el componente 
 import DetalleProductoFirebase from './components/DetalleProductoFirebase'; // Importamos el componente DetalleProductoFirebase         
 import { useAuth } from './components/auth/authcontext.jsx';
 import Login from './components/auth/login.jsx';
+import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   const {user,loading} = useAuth();
   if (loading) {
@@ -32,7 +33,9 @@ function App() {
           {/* Ruta para la página de gestión */}
           
         </Route>
-        <Route path="/gestion" element={<Gestion />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/gestion" element={<Gestion />} />
+        </Route>  
       </Routes>
   );
 }
