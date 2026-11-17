@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { getProfiles, deleteProfile, updateProfile } from "@/API/firebase/firebaseservice.js";
-import { auth } from '@/API/firebase/firebase.js'; // Importás tu auth para obtener el usuario actual
+import { getProfiles, deleteProfile, updateProfile, createUserProfile } from "@/API/firebase/firebaseservice.js";
+import { auth } from '@/API/firebase/firebase.js';
 import './ListaUsuarios.css';
 
 const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filtro, setFiltro] = useState('');
 
-  // Estados para controlar el modal de edición
+  // Estados del modal (si usuarioSeleccionado es null, es Alta; si tiene objeto, es Edición)
   const [modalAbierto, setModalAbierto] = useState(false);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
-  const [nombreEditado, setNombreEditado] = useState('');
+  
+  // Campos del formulario
+  const [nombre, setNombre] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); // Requerido para crear en Firebase Auth
+  const [rol, setRol] = useState('cliente');
 
   // UID del usuario logueado actualmente en Firebase Auth
   const usuarioActualUid = auth.currentUser?.uid;
@@ -32,22 +38,41 @@ const ListaUsuarios = () => {
     cargarUsuarios();
   }, []);
 
-  const handleEditar = (row) => {
-    setUsuarioSeleccionado(row);
-    setNombreEditado(row.nombre || '');
+  // Abrir modal en modo ALTA
+  const handleNuevo = () => {
+    setUsuarioSeleccionado(null);
+    setNombre('');
+    setEmail('');
+    setPassword('');
+    setRol('cliente');
     setModalAbierto(true);
   };
 
-  const handleGuardarCambios = async (e) => {
+  // Abrir modal en modo EDICIÓN
+  const handleEditar = (row) => {
+    setUsuarioSeleccionado(row);
+    setNombre(row.nombre || '');
+    setEmail(row.email || '');
+    setPassword(''); // No se edita la contraseña acá
+    setRol(row.rol || 'cliente');
+    setModalAbierto(true);
+  };
+
+  const handleGuardar = async (e) => {
     e.preventDefault();
-    if (!usuarioSeleccionado) return;
 
     try {
-      await updateProfile(usuarioSeleccionado.id, { nombre: nombreEditado });
+      if (usuarioSeleccionado) {
+        // Modo Edición (actualizamos nombre y rol)
+        await updateProfile(usuarioSeleccionado.id, { nombre, rol });
+      } else {
+        // Modo Alta usando el método correcto de tu service
+        await createUserProfile(email, password, nombre, rol);
+      }
       setModalAbierto(false);
       cargarUsuarios();
     } catch (error) {
-      console.error("Error al actualizar:", error);
+      console.error("Error al guardar:", error);
     }
   };
 
@@ -61,6 +86,12 @@ const ListaUsuarios = () => {
       }
     }
   };
+
+  // Filtrado en tiempo real por nombre o email
+  const usuariosFiltrados = usuarios.filter(u =>
+    (u.nombre && u.nombre.toLowerCase().includes(filtro.toLowerCase())) ||
+    (u.email && u.email.toLowerCase().includes(filtro.toLowerCase()))
+  );
 
   const columnas = [
     {
@@ -81,7 +112,6 @@ const ListaUsuarios = () => {
     {
       name: 'Acciones',
       cell: row => {
-        // Evaluamos si el row actual es el usuario logueado usando su id interno
         const esUsuarioActual = row.id === usuarioActualUid;
 
         return (
@@ -116,42 +146,84 @@ const ListaUsuarios = () => {
     },
   ];
 
-  return (
+return (
     <div className="usuarios-container">
       <h2>Gestión de Usuarios</h2>
       
-      <button 
-        className="btn-nuevo"
-        onClick={() => console.log("Abrir modal de alta")}
-      >
-        + Nuevo Usuario
-      </button>
+      {/* Buscador en su propio bloque arriba */}
+      <div className="contenedor-buscador">
+        <input
+          type="text"
+          placeholder="Buscar por nombre o email..."
+          className="input-buscador"
+          value={filtro}
+          onChange={(e) => setFiltro(e.target.value)}
+        />
+      </div>
+
+      {/* Botón de nuevo usuario en su propio bloque separado */}
+      <div className="contenedor-btn-nuevo">
+        <button className="btn-nuevo" onClick={handleNuevo}>
+          + Nuevo Usuario
+        </button>
+      </div>
 
       <DataTable
         columns={columnas}
-        data={usuarios}
+        data={usuariosFiltrados}
         progressPending={loading}
         pagination
         highlightOnHover
         pointerOnHover
-        noDataComponent="No hay usuarios registrados"
+        noDataComponent="No se encontraron usuarios"
       />
 
-      {/* Modal de edición */}
+      {/* Modal unificado para Alta y Edición */}
       {modalAbierto && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3>Editar Usuario</h3>
-            <p><strong>Email:</strong> {usuarioSeleccionado?.email}</p>
+            <h3>{usuarioSeleccionado ? 'Editar Usuario' : 'Nuevo Usuario'}</h3>
             
-            <form onSubmit={handleGuardarCambios}>
+            <form onSubmit={handleGuardar}>
+              <div className="form-group">
+                <label>Email:</label>
+                <input 
+                  type="email" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={!!usuarioSeleccionado}
+                  required
+                />
+              </div>
+
+              {!usuarioSeleccionado && (
+                <div className="form-group">
+                  <label>Contraseña:</label>
+                  <input 
+                    type="password" 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    required
+                  />
+                </div>
+              )}
+
               <div className="form-group">
                 <label>Nombre:</label>
                 <input 
                   type="text" 
-                  value={nombreEditado} 
-                  onChange={(e) => setNombreEditado(e.target.value)} 
+                  value={nombre} 
+                  onChange={(e) => setNombre(e.target.value)} 
+                  required
                 />
+              </div>
+
+              <div className="form-group">
+                <label>Rol:</label>
+                <select value={rol} onChange={(e) => setRol(e.target.value)}>
+                  <option value="cliente">Cliente</option>
+                  <option value="administrador">Administrador</option>
+                </select>
               </div>
 
               <div className="modal-buttons">

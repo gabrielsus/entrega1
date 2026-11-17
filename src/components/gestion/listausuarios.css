@@ -3,14 +3,48 @@
   font-family: sans-serif;
 }
 
+/* Barra superior limpia que separa los extremos */
+.toolbar-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
 .btn-nuevo {
-  margin-bottom: 15px;
-  padding: 8px 15px;
+  padding: 9px 16px;
   cursor: pointer;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.btn-nuevo:hover {
+  background-color: #0056b3;
+}
+
+/* Eliminamos los paddings molestos del contenedor y dejamos fluir el input */
+.contenedor-buscador {
+  display: flex;
+  align-items: center;
+}
+
+.input-buscador {
+  padding: 9px 14px;
+  border: 1px solid #d8f2fc !important;
+  border-radius: 4px;
+  width: 300px;
+  font-size: 20px;
+  outline: none;
+}
+
+.input-buscador:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
 }
 
 .acciones-container {
@@ -25,7 +59,7 @@
   font-size: 16px;
 }
 
-/* Estilos básicos para el Modal flotante */
+/* Estilos para el Modal flotante */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -36,6 +70,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
@@ -53,10 +88,13 @@
   gap: 5px;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
 }
 
 .modal-buttons {

@@ -21,11 +21,11 @@ const Gestion = () => {
         </div>
         
         {/* Agregamos la barra de usuario en la esquina superior derecha */}
+
+      </div>
         <div className="gestion-derecha">
           <UserBar />
         </div>
-      </div>
-
       {/* // Gestión de tabs */}
       <div className="gestion-tabs">
         <button className={"tab-btn " + (pestanaActiva === 'productos' ? 'activa' : '')} onClick={() => setPestanaActiva('productos')}>
