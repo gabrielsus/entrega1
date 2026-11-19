@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { AccountIcon } from './svg/account.jsx';
 import AlertaSimple from '../alertas/alertasimple.jsx';
-import { useAuth } from './auth/authcontext.jsx'; // Tu hook de auth
+import { useAuth } from './auth/authcontext.jsx';
+import FiltroBusqueda from './search/searchbar.jsx';
 import './userbar.css';
 
 const UserBar = () => {
-    const { cambiarPassword } = useAuth(); 
+    const { cambiarPassword, user, logout } = useAuth();
     const [menuAbierto, setMenuAbierto] = useState(false);
-    const { user, logout } = useAuth(); // Consumimos el usuario y el logout del context
 
     const [passwordActual, setPasswordActual] = useState('');
     const [nuevaPassword, setNuevaPassword] = useState('');
 
     const [alertaAbierta, setAlertaAbierta] = useState(false);
-    const [mensajeAlerta, setMensajeAlerta] = useState(''); 
-const handleGuardarPassword = async () => {
+    const [mensajeAlerta, setMensajeAlerta] = useState('');
+
+    const handleGuardarPassword = async () => {
         if (!passwordActual || !nuevaPassword) {
             setMensajeAlerta('Completá ambos campos de contraseña');
             setAlertaAbierta(true);
@@ -23,7 +24,7 @@ const handleGuardarPassword = async () => {
 
         try {
             await cambiarPassword(passwordActual, nuevaPassword);
-            
+
             setMenuAbierto(false);
             setMensajeAlerta('Contraseña actualizada con éxito');
             setAlertaAbierta(true);
@@ -35,9 +36,9 @@ const handleGuardarPassword = async () => {
         }
     };
 
-     const handleCerrarSesion = async () => {
+    const handleCerrarSesion = async () => {
         try {
-            await logout(); // Ejecutamos el signOut(auth) del context
+            await logout();
             setMenuAbierto(false);
             setMensajeAlerta('Sesión cerrada correctamente');
             setAlertaAbierta(true);
@@ -50,9 +51,13 @@ const handleGuardarPassword = async () => {
 
     return (
         <div className="user-bar-wrapper">
+            <div className="user-bar-left">
+                <FiltroBusqueda />
+            </div>
+
             <div className="user-bar-container">
-                <div 
-                    className="user-bar-profile" 
+                <div
+                    className="user-bar-profile"
                     onClick={() => setMenuAbierto(!menuAbierto)}
                     title="Opciones de cuenta"
                 >
@@ -67,26 +72,26 @@ const handleGuardarPassword = async () => {
                             <p className="dropdown-email">{user?.email || 'gabriel.sus@gmail.com'}</p>
                             <span className="dropdown-badge">Administrador</span>
                         </div>
-                        
+
                         <div className="dropdown-separator"></div>
 
                         <div className="dropdown-section">
                             <h4>Cambiar Contraseña</h4>
-                            <input 
-                                type="password" 
-                                placeholder="Contraseña actual" 
+                            <input
+                                type="password"
+                                placeholder="Contraseña actual"
                                 className="dropdown-input"
                                 value={passwordActual}
                                 onChange={(e) => setPasswordActual(e.target.value)}
                             />
-                            <input 
-                                type="password" 
-                                placeholder="Nueva contraseña" 
+                            <input
+                                type="password"
+                                placeholder="Nueva contraseña"
                                 className="dropdown-input"
                                 value={nuevaPassword}
                                 onChange={(e) => setNuevaPassword(e.target.value)}
                             />
-                            <button 
+                            <button
                                 className="dropdown-btn-primary"
                                 onClick={handleGuardarPassword}
                             >
@@ -96,7 +101,7 @@ const handleGuardarPassword = async () => {
 
                         <div className="dropdown-separator"></div>
 
-                        <button 
+                        <button
                             className="dropdown-btn-danger"
                             onClick={handleCerrarSesion}
                         >
@@ -107,9 +112,9 @@ const handleGuardarPassword = async () => {
             </div>
 
             {alertaAbierta && (
-                <AlertaSimple 
-                    mensaje={mensajeAlerta} 
-                    onCerrar={() => setAlertaAbierta(false)} 
+                <AlertaSimple
+                    mensaje={mensajeAlerta}
+                    onCerrar={() => setAlertaAbierta(false)}
                 />
             )}
         </div>
