@@ -43,6 +43,11 @@
   color: #1f2937;
 }
 
+.filtro-busqueda__opcion input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+}
+
 .filtro-busqueda__limpiar {
   font-size: 0.75rem;
   padding: 4px 10px;

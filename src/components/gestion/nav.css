@@ -449,3 +449,22 @@
     color: #2c3e50;
     margin: 0;
 }
+
+.filtro-gestion-categoria {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.filtro-gestion-categoria select {
+  padding: 6px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #111827;
+  font-size: 0.875rem;
+  cursor: pointer;
+}

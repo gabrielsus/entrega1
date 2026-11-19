@@ -4,19 +4,21 @@ import ItemGestion from "./itemGestion";
 import FormProdLocal from "./forms/formProdLocal";
 import updateProducto from "@/API/django/updateproducto";
 import createProducto from "@/API/django/createproducto";
-import deleteProducto from "@/API/django/deleteproducto"; // <--- Importamos deleteProducto
+import deleteProducto from "@/API/django/deleteproducto";
 import AlertaSimple from "../../alertas/alertasimple";
 import IconoAgregar from "@/components/svg/iconoagregar";
+import categoriasData from "@/data/categories.json";
 
 const ListaProductosLocal = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+  const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
+
   const [modalAbierto, setModalAbierto] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [modoEliminar, setModoEliminar] = useState(false);
-  
+
   const [alertaMensaje, setAlertaMensaje] = useState(null);
 
   useEffect(() => {
@@ -37,22 +39,28 @@ const ListaProductosLocal = () => {
   const handleEdit = (id) => {
     const productoAEditar = productos.find((producto) => producto.id === id);
     setProductoSeleccionado(productoAEditar);
-    setModoEliminar(false); // Nos aseguramos que no esté en modo eliminar
+    setModoEliminar(false);
     setModalAbierto(true);
   };
 
   const handleCrearNuevo = () => {
     setProductoSeleccionado(null);
-    setModoEliminar(false); // Nos aseguramos que no esté en modo eliminar
+    setModoEliminar(false);
     setModalAbierto(true);
   };
 
   const handleDelete = (id) => {
     const productoAEliminar = productos.find((producto) => producto.id === id);
     setProductoSeleccionado(productoAEliminar);
-    setModoEliminar(true); // <--- Activamos el modo eliminar para el modal
+    setModoEliminar(true);
     setModalAbierto(true);
   };
+
+  const productosFiltrados = productos.filter((prod) => {
+    if (categoriaFiltro === "Todas") return true;
+    const catProd = (prod.category ?? prod.categoria ?? "General").trim().toLowerCase();
+    return catProd === categoriaFiltro.toLowerCase();
+  });
 
   if (loading) return <div>Cargando productos...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -61,6 +69,21 @@ const ListaProductosLocal = () => {
     <div className="lista-global">
       <div className="header-seccion-local">
         <h2>Envío Local</h2>
+        <div className="filtro-gestion-categoria">
+          <label htmlFor="filtroCatLocal">Categoría: </label>
+          <select
+            id="filtroCatLocal"
+            value={categoriaFiltro}
+            onChange={(e) => setCategoriaFiltro(e.target.value)}
+          >
+            <option value="Todas">Todas</option>
+            {categoriasData.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
         <button className="btn-nuevo-producto" onClick={handleCrearNuevo}>
           <IconoAgregar width={18} height={18} />
           <span>Nuevo producto</span>
@@ -68,7 +91,7 @@ const ListaProductosLocal = () => {
       </div>
 
       <div className="productos-grid">
-        {productos.map((producto) => (
+        {productosFiltrados.map((producto) => (
           <ItemGestion
             key={producto.id}
             id={producto.id}
@@ -76,16 +99,17 @@ const ListaProductosLocal = () => {
             price={producto.price}
             image={producto.image}
             shipping={producto.shipping}
+            category={producto.category}
             OnEdit={handleEdit}
             OnDelete={handleDelete}
           />
         ))}
       </div>
 
-     {modalAbierto && (
+      {modalAbierto && (
         <FormProdLocal
           initialData={productoSeleccionado}
-          modoEliminar={modoEliminar} // <--- Pasamos esta prop para que el formulario sepa si pinta rojo y cambia botones
+          modoEliminar={modoEliminar}
           onSubmit={async (payload) => {
             try {
               if (modoEliminar) {
@@ -105,7 +129,6 @@ const ListaProductosLocal = () => {
 
               const dataActualizada = await traerProductos();
               setProductos(dataActualizada);
-
             } catch (error) {
               console.error("Error al procesar el producto:", error);
               setAlertaMensaje("Hubo un error al procesar el producto.");
@@ -120,9 +143,9 @@ const ListaProductosLocal = () => {
       )}
 
       {alertaMensaje && (
-        <AlertaSimple 
-          mensaje={alertaMensaje} 
-          onCerrar={() => setAlertaMensaje(null)} 
+        <AlertaSimple
+          mensaje={alertaMensaje}
+          onCerrar={() => setAlertaMensaje(null)}
         />
       )}
     </div>

@@ -7,17 +7,18 @@ import updateProducto from "@/API/firebase/updateproducto";
 import deleteProducto from "@/API/firebase/deleteproducto";
 import AlertaSimple from "../../alertas/alertasimple.jsx";
 import IconoAgregar from "@/components/svg/iconoagregar";
-
+import categoriasData from "@/data/categories.json";
 
 const ListaProductosInternacional = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
 
- const [modalAbierto, setModalAbierto] = useState(false);
+  const [modalAbierto, setModalAbierto] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [modoEliminar, setModoEliminar] = useState(false);
-  
+
   const [alertaMensaje, setAlertaMensaje] = useState(null);
 
   useEffect(() => {
@@ -55,6 +56,12 @@ const ListaProductosInternacional = () => {
     setModalAbierto(true);
   };
 
+  const productosFiltrados = productos.filter((prod) => {
+    if (categoriaFiltro === "Todas") return true;
+    const catProd = (prod.category ?? prod.categoria ?? "General").trim().toLowerCase();
+    return catProd === categoriaFiltro.toLowerCase();
+  });
+
   if (loading) return <div>Cargando productos internacionales...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -62,6 +69,21 @@ const ListaProductosInternacional = () => {
     <div className="lista-global">
       <div className="header-seccion-local">
         <h2>Envío Internacional</h2>
+        <div className="filtro-gestion-categoria">
+          <label htmlFor="filtroCatInt">Categoría: </label>
+          <select
+            id="filtroCatInt"
+            value={categoriaFiltro}
+            onChange={(e) => setCategoriaFiltro(e.target.value)}
+          >
+            <option value="Todas">Todas</option>
+            {categoriasData.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
         <button className="btn-nuevo-producto" onClick={handleCrearNuevo}>
           <IconoAgregar width={18} height={18} />
           <span>Nuevo producto</span>
@@ -69,7 +91,7 @@ const ListaProductosInternacional = () => {
       </div>
 
       <div className="productos-grid">
-        {productos.map((producto) => (
+        {productosFiltrados.map((producto) => (
           <ItemGestion
             key={producto.id}
             id={producto.id}
@@ -77,14 +99,14 @@ const ListaProductosInternacional = () => {
             price={producto.price}
             image={producto.image}
             shipping={producto.shipping}
-            category={producto.category} // Aprovechamos el nuevo campo
+            category={producto.category}
             OnEdit={handleEdit}
             OnDelete={handleDelete}
           />
         ))}
       </div>
 
-     {modalAbierto && (
+      {modalAbierto && (
         <FormProdInternacional
           initialData={productoSeleccionado}
           modoEliminar={modoEliminar}
@@ -105,10 +127,8 @@ const ListaProductosInternacional = () => {
               setProductoSeleccionado(null);
               setModoEliminar(false);
 
-              // Recargamos la lista desde Firestore
               const dataActualizada = await traerProductos();
               setProductos(dataActualizada);
-
             } catch (error) {
               console.error("Error al procesar el producto:", error);
               setAlertaMensaje("Hubo un error al procesar el producto.");
@@ -123,9 +143,9 @@ const ListaProductosInternacional = () => {
       )}
 
       {alertaMensaje && (
-        <AlertaSimple 
-          mensaje={alertaMensaje} 
-          onCerrar={() => setAlertaMensaje(null)} 
+        <AlertaSimple
+          mensaje={alertaMensaje}
+          onCerrar={() => setAlertaMensaje(null)}
         />
       )}
     </div>

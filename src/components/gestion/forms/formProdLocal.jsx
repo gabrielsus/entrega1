@@ -2,7 +2,15 @@ import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import noImage from "../../../assets/noimage.jpg"; 
 import { subirImagenImgBB } from "@/API/imagebb/upimagebb"; 
+import categoriasData from "@/data/categories.json";
 import './formProdLocal.css';
+
+const normalizarCategoriaInicial = (valor) => {
+    if (!valor) return "General";
+    const limpia = String(valor).trim().toLowerCase();
+    const match = categoriasData.find((cat) => cat.toLowerCase() === limpia);
+    return match || valor;
+};
 
 const FormProdLocal = ({ initialData, modoEliminar, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState({
@@ -11,7 +19,7 @@ const FormProdLocal = ({ initialData, modoEliminar, onSubmit, onCancel }) => {
         price: initialData?.price || "",
         shipping: initialData?.shipping || "",
         weight: initialData?.weight || "",
-        category: initialData?.category || "",
+        category: normalizarCategoriaInicial(initialData?.category),
     });
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -117,14 +125,20 @@ const FormProdLocal = ({ initialData, modoEliminar, onSubmit, onCancel }) => {
 
                 <div className={`form-group ${modoEliminar ? "form-group-disabled" : ""}`}>
                     <label htmlFor="category">Categoría:</label>
-                    <input
-                        type="text"
+                    <select
                         id="category"
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
                         disabled={modoEliminar}
-                    />
+                    >
+                        <option value="">Seleccioná una categoría...</option>
+                        {categoriasData.map((cat) => (
+                            <option key={cat} value={cat}>
+                                {cat}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="form-group">
@@ -175,18 +189,6 @@ const FormProdLocal = ({ initialData, modoEliminar, onSubmit, onCancel }) => {
                         required
                     />
                 </div>
-{/* 
-                <div className={`form-group ${modoEliminar ? "form-group-disabled" : ""}`}>
-                    <label htmlFor="shipping">Envío:</label>
-                    <input
-                        type="text"
-                        id="shipping"
-                        name="shipping"
-                        value={formData.shipping}
-                        onChange={handleChange}
-                        disabled={modoEliminar}
-                    />
-                </div> */}
 
                 <div className={`form-group ${modoEliminar ? "form-group-disabled" : ""}`} >
                     <label htmlFor="weight">Peso:</label>

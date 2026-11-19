@@ -10,7 +10,7 @@ const ItemListContainer = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { searchTerm, selectedCategories } = useSearch();
+    const { searchTerm, selectedCategory } = useSearch();
 
     const fetchProductos = async () => {
         try {
@@ -35,12 +35,10 @@ const ItemListContainer = () => {
             const categoria = (prod.categoria ?? prod.category ?? '').trim().toLowerCase();
 
             const coincideBusqueda = !query || texto.includes(query);
-            const coincideCategoria =
-                selectedCategories.length === 0 || selectedCategories.includes(categoria);
-
+            const coincideCategoria = !selectedCategory || categoria === selectedCategory.trim().toLowerCase();
             return coincideBusqueda && coincideCategoria;
         });
-    }, [productos, searchTerm, selectedCategories]);
+    }, [productos, searchTerm, selectedCategory]);
 
     return (
         <div className="catalog-container">

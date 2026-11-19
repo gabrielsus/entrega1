@@ -1,33 +1,25 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from "react";
+import categoriasData from "@/data/categories.json";
 
 const SearchContext = createContext(null);
 
 export const SearchProvider = ({ children }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState([]);
-
-  const toggleCategory = (category) => {
-    const normalized = category.trim().toLowerCase();
-    setSelectedCategories((prev) =>
-      prev.includes(normalized)
-        ? prev.filter((c) => c !== normalized)
-        : [...prev, normalized]
-    );
-  };
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const clearFilters = () => {
-    setSearchTerm('');
-    setSelectedCategories([]);
+    setSearchTerm("");
+    setSelectedCategory("");
   };
 
   return (
     <SearchContext.Provider
       value={{
+        categories: categoriasData,
         searchTerm,
         setSearchTerm,
-        selectedCategories,
-        setSelectedCategories,
-        toggleCategory,
+        selectedCategory,
+        setSelectedCategory,
         clearFilters,
       }}
     >
