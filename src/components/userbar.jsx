@@ -5,7 +5,7 @@ import { useAuth } from './auth/authcontext.jsx';
 import FiltroBusqueda from './search/searchbar.jsx';
 import './userbar.css';
 
-const UserBar = () => {
+const UserBar = ({radio}) => {
     const { cambiarPassword, user, logout } = useAuth();
     const [menuAbierto, setMenuAbierto] = useState(false);
 
@@ -52,7 +52,7 @@ const UserBar = () => {
     return (
         <div className="user-bar-wrapper">
             <div className="user-bar-left">
-                <FiltroBusqueda />
+                <FiltroBusqueda showCategories={radio} />
             </div>
 
             <div className="user-bar-container">

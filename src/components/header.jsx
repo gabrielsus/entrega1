@@ -15,7 +15,7 @@ const Header = () => {
                 <img src={bolsa} alt="Bolsa" className="bolsa-chiquita" />
             </div>
             <Nav />
-            <UserBar /> {/* Ubicada de forma sutil justo debajo de la nav bar */}
+            <UserBar radio={true} /> {/* Ubicada de forma sutil justo debajo de la nav bar */}
         </div>
     );
 };

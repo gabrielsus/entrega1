@@ -24,7 +24,7 @@ const Gestion = () => {
 
       </div>
         <div className="gestion-derecha">
-          <UserBar />
+          <UserBar radio={false} />
         </div>
       {/* // Gestión de tabs */}
       <div className="gestion-tabs">

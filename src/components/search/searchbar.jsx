@@ -1,7 +1,7 @@
 import "./searchbar.css";
 import { useSearch } from "./searchcontext";
 
-export default function FiltroBusqueda() {
+export default function FiltroBusqueda({ showCategories = true }) {
   const {
     categories,
     searchTerm,
@@ -21,33 +21,35 @@ export default function FiltroBusqueda() {
         className="filtro-busqueda__input"
       />
 
-      <div className="filtro-busqueda__categorias">
-        <span className="filtro-busqueda__label">Categorías:</span>
+      {showCategories && (
+        <div className="filtro-busqueda__categorias">
+          <span className="filtro-busqueda__label">Categorías:</span>
 
-        <label className="filtro-busqueda__opcion">
-          <input
-            type="radio"
-            name="categoriaFiltro"
-            value=""
-            checked={selectedCategory === ""}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          />
-          <span>Todas</span>
-        </label>
-
-        {categories.map((cat) => (
-          <label key={cat} className="filtro-busqueda__opcion">
+          <label className="filtro-busqueda__opcion">
             <input
               type="radio"
               name="categoriaFiltro"
-              value={cat}
-              checked={selectedCategory === cat}
+              value=""
+              checked={selectedCategory === ""}
               onChange={(e) => setSelectedCategory(e.target.value)}
             />
-            <span>{cat}</span>
+            <span>Todas</span>
           </label>
-        ))}
-      </div>
+
+          {categories.map((cat) => (
+            <label key={cat} className="filtro-busqueda__opcion">
+              <input
+                type="radio"
+                name="categoriaFiltro"
+                value={cat}
+                checked={selectedCategory === cat}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              />
+              <span>{cat}</span>
+            </label>
+          ))}
+        </div>
+      )}
 
       {(searchTerm || selectedCategory !== "") && (
         <button

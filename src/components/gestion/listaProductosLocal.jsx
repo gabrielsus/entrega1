@@ -8,8 +8,10 @@ import deleteProducto from "@/API/django/deleteproducto";
 import AlertaSimple from "../../alertas/alertasimple";
 import IconoAgregar from "@/components/svg/iconoagregar";
 import categoriasData from "@/data/categories.json";
+import {useSearch} from "@/components/search/searchcontext.jsx";
 
 const ListaProductosLocal = () => {
+  const { searchTerm } = useSearch();
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,11 +58,20 @@ const ListaProductosLocal = () => {
     setModalAbierto(true);
   };
 
-  const productosFiltrados = productos.filter((prod) => {
-    if (categoriaFiltro === "Todas") return true;
-    const catProd = (prod.category ?? prod.categoria ?? "General").trim().toLowerCase();
-    return catProd === categoriaFiltro.toLowerCase();
-  });
+const productosFiltrados = productos.filter((prod) => {
+  const coincideCategoria =
+    categoriaFiltro === "Todas" ||
+    (prod.category ?? prod.categoria ?? "General").trim().toLowerCase() ===
+      categoriaFiltro.toLowerCase();
+
+  const texto = (searchTerm ?? "").trim().toLowerCase();
+  const coincideTexto =
+    !texto ||
+    (prod.description ?? "").toLowerCase().includes(texto) ||
+    (prod.category ?? prod.categoria ?? "").toLowerCase().includes(texto);
+
+  return coincideCategoria && coincideTexto;
+ });
 
   if (loading) return <div>Cargando productos...</div>;
   if (error) return <div>Error: {error}</div>;
