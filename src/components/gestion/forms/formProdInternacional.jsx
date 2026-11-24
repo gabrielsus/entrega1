@@ -5,6 +5,7 @@ import { subirImagenImgBB } from "@/API/imagebb/upimagebb";
 import { listaPaises } from "@/data/paises"; 
 import categoriasData from "@/data/categories.json";
 import './formProdLocal.css';
+import {useForm} from "react-hook-form";
 
 const normalizarCategoriaInicial = (valor) => {
     if (!valor) return "General";
