@@ -5,11 +5,14 @@ import Item from './item.jsx';
 import enchufe from '../assets/enchufe.png';
 import Reload from './svg/reload';
 import { useSearch } from './search/searchcontext.jsx'; // ajustá la ruta según tu carpeta
+import { usePagination } from '../hooks/usePagination.js'; // ajustá la ruta según tu carpeta
+import PaginationControls from './PaginationControls.jsx'; // ajustá la ruta según tu carpeta
 
 const ItemListContainerFirebase = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [pageSize, setPageSize] = useState(8);
     const { searchTerm, selectedCategory } = useSearch();
 
     const fetchProductos = async () => {
@@ -47,6 +50,16 @@ const ItemListContainerFirebase = () => {
         });
     }, [productos, searchTerm, selectedCategory]);
 
+    const {
+        currentPage,
+        totalPages,
+        paginatedItems,
+        nextPage,
+        prevPage,
+        hasNextPage,
+        hasPrevPage,
+    } = usePagination(productosFiltrados, pageSize, [searchTerm, selectedCategory]);
+
     return (
         <div className="catalog-container">
             {loading && <p>Cargando productos...</p>}
@@ -63,20 +76,33 @@ const ItemListContainerFirebase = () => {
             )}
 
             {!loading && !error && (
-                <div className="productos-grid">
-                    {productosFiltrados.map((prod) => (
-                        <Item
-                            key={prod.id}
-                            id={prod.id}
-                            description={prod.description}
-                            price={prod.price}
-                            image={prod.image}
-                            shipping={prod.shipping}
-                            favoritoInicial={false}
-                            esInternacional={true}
-                        />
-                    ))}
-                </div>
+                <>
+                    <div className="productos-grid">
+                        {paginatedItems.map((prod) => (
+                            <Item
+                                key={prod.id}
+                                id={prod.id}
+                                description={prod.description}
+                                price={prod.price}
+                                image={prod.image}
+                                shipping={prod.shipping}
+                                favoritoInicial={false}
+                                esInternacional={true}
+                            />
+                        ))}
+                    </div>
+
+                    <PaginationControls
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        pageSize={pageSize}
+                        onPageSizeChange={setPageSize}
+                        hasPrevPage={hasPrevPage}
+                        hasNextPage={hasNextPage}
+                        onPrev={prevPage}
+                        onNext={nextPage}
+                    />
+                </>
             )}
         </div>
     );

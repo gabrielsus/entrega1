@@ -9,12 +9,15 @@ import AlertaSimple from "../../alertas/alertasimple.jsx";
 import IconoAgregar from "@/components/svg/iconoagregar";
 import categoriasData from "@/data/categories.json";
 import { useSearch } from "@/components/search/searchcontext.jsx";
+import { usePagination } from "@/hooks/usePagination.js"; // ajustá si está en otra carpeta
+import PaginationControls from "@/components/PaginationControls.jsx"; // ajustá si está en otra carpeta
 
 const ListaProductosInternacional = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
+  const [pageSize, setPageSize] = useState(8);
   const { searchTerm } = useSearch();
 
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -58,20 +61,30 @@ const ListaProductosInternacional = () => {
     setModalAbierto(true);
   };
 
-const productosFiltrados = productos.filter((prod) => {
-  const coincideCategoria =
-    categoriaFiltro === "Todas" ||
-    (prod.category ?? prod.categoria ?? "General").trim().toLowerCase() ===
-      categoriaFiltro.toLowerCase();
+  const productosFiltrados = productos.filter((prod) => {
+    const coincideCategoria =
+      categoriaFiltro === "Todas" ||
+      (prod.category ?? prod.categoria ?? "General").trim().toLowerCase() ===
+        categoriaFiltro.toLowerCase();
 
-  const texto = (searchTerm ?? "").trim().toLowerCase();
-  const coincideTexto =
-    !texto ||
-    (prod.description ?? "").toLowerCase().includes(texto) ||
-    (prod.category ?? prod.categoria ?? "").toLowerCase().includes(texto);
+    const texto = (searchTerm ?? "").trim().toLowerCase();
+    const coincideTexto =
+      !texto ||
+      (prod.description ?? "").toLowerCase().includes(texto) ||
+      (prod.category ?? prod.categoria ?? "").toLowerCase().includes(texto);
 
-  return coincideCategoria && coincideTexto;
- });
+    return coincideCategoria && coincideTexto;
+  });
+
+  const {
+    currentPage,
+    totalPages,
+    paginatedItems,
+    nextPage,
+    prevPage,
+    hasNextPage,
+    hasPrevPage,
+  } = usePagination(productosFiltrados, pageSize, [categoriaFiltro, searchTerm]);
 
   if (loading) return <div>Cargando productos internacionales...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -102,7 +115,7 @@ const productosFiltrados = productos.filter((prod) => {
       </div>
 
       <div className="productos-grid">
-        {productosFiltrados.map((producto) => (
+        {paginatedItems.map((producto) => (
           <ItemGestion
             key={producto.id}
             id={producto.id}
@@ -116,6 +129,17 @@ const productosFiltrados = productos.filter((prod) => {
           />
         ))}
       </div>
+
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        pageSize={pageSize}
+        onPageSizeChange={setPageSize}
+        hasPrevPage={hasPrevPage}
+        hasNextPage={hasNextPage}
+        onPrev={prevPage}
+        onNext={nextPage}
+      />
 
       {modalAbierto && (
         <FormProdInternacional
