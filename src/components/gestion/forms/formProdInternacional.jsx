@@ -123,6 +123,7 @@ const FormProdInternacional = ({ initialData, modoEliminar, onSubmit, onCancel }
                         onChange={handleChange}
                         disabled={modoEliminar}
                         required
+                        
                     />
                 </div>
 
