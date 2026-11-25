@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { getProfiles, deleteProfile, updateProfile, createUserProfile } from "@/API/firebase/firebaseservice.js";
 import { auth } from '@/API/firebase/firebase.js';
+import AlertaSimple from "../../alertas/alertasimple.jsx";
 import './listausuarios.css';
 
 const ListaUsuarios = () => {
@@ -9,10 +10,13 @@ const ListaUsuarios = () => {
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState('');
 
+  // Estado unificado de alerta: null (cerrada) o { mensaje, esError }
+  const [alerta, setAlerta] = useState(null);
+
   // Estados del modal (si usuarioSeleccionado es null, es Alta; si tiene objeto, es Edición)
   const [modalAbierto, setModalAbierto] = useState(false);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
-  
+
   // Campos del formulario
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
@@ -22,6 +26,14 @@ const ListaUsuarios = () => {
   // UID del usuario logueado actualmente en Firebase Auth
   const usuarioActualUid = auth.currentUser?.uid;
 
+  const mostrarAlerta = (mensaje, esError = false) => {
+    setAlerta({ mensaje, esError });
+  };
+
+  const cerrarAlerta = () => {
+    setAlerta(null);
+  };
+
   const cargarUsuarios = async () => {
     setLoading(true);
     try {
@@ -29,6 +41,7 @@ const ListaUsuarios = () => {
       setUsuarios(data);
     } catch (error) {
       console.error("Error al cargar usuarios:", error);
+      mostrarAlerta("Error al cargar usuarios. Por favor, intenta nuevamente.", true);
     } finally {
       setLoading(false);
     }
@@ -65,14 +78,21 @@ const ListaUsuarios = () => {
       if (usuarioSeleccionado) {
         // Modo Edición (actualizamos nombre y rol)
         await updateProfile(usuarioSeleccionado.id, { nombre, rol });
+        mostrarAlerta("Usuario actualizado correctamente.");
       } else {
         // Modo Alta usando el método correcto de tu service
         await createUserProfile(email, password, nombre, rol);
+        mostrarAlerta("Usuario creado correctamente.");
       }
       setModalAbierto(false);
       cargarUsuarios();
     } catch (error) {
       console.error("Error al guardar:", error);
+      if (error.code === "auth/email-already-in-use") {
+        mostrarAlerta("Ese correo ya está registrado en Authentication.", true);
+      } else {
+        mostrarAlerta("No se pudo guardar el usuario. Intentá nuevamente.", true);
+      }
     }
   };
 
@@ -81,8 +101,10 @@ const ListaUsuarios = () => {
       try {
         await deleteProfile(id);
         cargarUsuarios();
+        mostrarAlerta("Perfil eliminado correctamente.");
       } catch (error) {
         console.error("Error al eliminar:", error);
+        mostrarAlerta("No se pudo eliminar el perfil.", true);
       }
     }
   };
@@ -116,20 +138,20 @@ const ListaUsuarios = () => {
 
         return (
           <div className="acciones-container">
-            <button 
+            <button
               className="btn-accion"
               onClick={() => handleEditar(row)}
               title="Editar usuario"
             >
               ✏️
             </button>
-            
+
             {esUsuarioActual ? (
               <span title="No podés eliminar tu propio usuario" className="btn-bloqueado">
                 🔒
               </span>
             ) : (
-              <button 
+              <button
                 className="btn-accion"
                 onClick={() => handleEliminar(row.id)}
                 title="Eliminar usuario"
@@ -146,10 +168,10 @@ const ListaUsuarios = () => {
     },
   ];
 
-return (
+  return (
     <div className="usuarios-container">
       <h2>Gestión de Usuarios</h2>
-      
+
       {/* Buscador en su propio bloque arriba */}
       <div className="contenedor-buscador">
         <input
@@ -157,7 +179,7 @@ return (
           placeholder="Buscar por nombre o email..."
           className="input-buscador"
           value={filtro}
-          onChange={(e) => setFiltro(e.target.value)}
+          onChange={(e) => setFiltro(e.target.value, longitud = e.target.value.length)}
         />
       </div>
 
@@ -183,13 +205,13 @@ return (
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>{usuarioSeleccionado ? 'Editar Usuario' : 'Nuevo Usuario'}</h3>
-            
+
             <form onSubmit={handleGuardar}>
               <div className="form-group">
                 <label>Email:</label>
-                <input 
-                  type="email" 
-                  value={email} 
+                <input
+                  type="email"
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={!!usuarioSeleccionado}
                   required
@@ -199,10 +221,10 @@ return (
               {!usuarioSeleccionado && (
                 <div className="form-group">
                   <label>Contraseña:</label>
-                  <input 
-                    type="password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
@@ -210,10 +232,10 @@ return (
 
               <div className="form-group">
                 <label>Nombre:</label>
-                <input 
-                  type="text" 
-                  value={nombre} 
-                  onChange={(e) => setNombre(e.target.value)} 
+                <input
+                  type="text"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
                   required
                 />
               </div>
@@ -233,6 +255,14 @@ return (
             </form>
           </div>
         </div>
+      )}
+
+      {alerta && (
+        <AlertaSimple
+          mensaje={password.length < 6 ? 'La contraseña debe tener al menos 6 caracteres.' : alerta.mensaje}
+          {...(alerta.esError ? { tipo: "error" } : {})}
+          onCerrar={cerrarAlerta}
+        />
       )}
     </div>
   );

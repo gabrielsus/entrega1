@@ -1,20 +1,20 @@
-import './alertasimple.css'; // Reutilizamos un CSS limpio o el mismo enfoque
+import './alertasimple.css';
 
-const AlertaSimple = ({ mensaje, onCerrar }) => {
-    return (
-        <div className="modal-backdrop">
-            <div className="form-prod-local" style={{ maxWidth: '350px', textAlign: 'center' }}>
-                <p style={{ color: '#117efb', fontWeight: '600', fontSize: '1rem', margin: '0 0 1rem 0' }}>
-                    {mensaje}
-                </p>
-                <div className="modal-botones" style={{ justifyContent: 'center' }}>
-                    <button type="button" onClick={onCerrar} style={{ backgroundColor: '#4a90e2', color: '#fff' }}>
-                        Aceptar
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+const AlertaSimple = ({ mensaje, tipo = 'info', onCerrar }) => {
+  const esError = tipo === 'error';
+
+  return (
+    <div className="alerta-backdrop">
+      <div className={`alerta-box ${esError ? 'alerta-error' : ''}`}>
+        <p className={`alerta-mensaje ${esError ? 'alerta-mensaje-error' : ''}`}>
+          {mensaje}
+        </p>
+        <button type="button" className="alerta-btn" onClick={onCerrar}>
+          Aceptar
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default AlertaSimple;

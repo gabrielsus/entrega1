@@ -29,12 +29,21 @@
   z-index: 10000;
 }
 
+.alerta-error {
+  background-color: #fdf2f2;
+  border: 1px solid #fccfcf;
+}
+
 /* 3. Texto del mensaje */
 .alerta-mensaje {
   color: #117efb;
   font-weight: 600;
   font-size: 1.05rem;
   margin: 0;
+}
+
+.alerta-mensaje-error {
+  color: #d32f2f;
 }
 
 /* 4. Botón de aceptar */
