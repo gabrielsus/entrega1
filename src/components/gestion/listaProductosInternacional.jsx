@@ -11,7 +11,7 @@ import categoriasData from "@/data/categories.json";
 import { useSearch } from "@/components/search/searchcontext.jsx";
 import { usePagination } from "@/hooks/usePagination.js"; // ajustá si está en otra carpeta
 import PaginationControls from "@/components/PaginationControls.jsx"; // ajustá si está en otra carpeta
-
+import Spinner from "@/spinner/spinner.jsx"; 
 const ListaProductosInternacional = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -86,7 +86,7 @@ const ListaProductosInternacional = () => {
     hasPrevPage,
   } = usePagination(productosFiltrados, pageSize, [categoriaFiltro, searchTerm]);
 
-  if (loading) return <div>Cargando productos internacionales...</div>;
+  if (loading) return <Spinner texto="Cargando productos internacionales..." />;
   if (error) return <div>Error: {error}</div>;
 
   return (

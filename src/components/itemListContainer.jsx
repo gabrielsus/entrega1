@@ -7,7 +7,7 @@ import Reload from './svg/reload';
 import { useSearch } from './search/searchcontext.jsx'; // ajustá la ruta según tu carpeta
 import { usePagination } from '../hooks/usePagination.js'; // ajustá la ruta según tu carpeta
 import PaginationControls from './PaginationControls.jsx'; // ajustá la ruta según tu carpeta
-
+import Spinner from "@/spinner/spinner.jsx"; 
 const ItemListContainer = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -55,7 +55,7 @@ const ItemListContainer = () => {
 
     return (
         <div className="catalog-container">
-            {loading && <p>Cargando productos...</p>}
+            {loading && <Spinner texto="Cargando productos..." />}
 
             {error && (
                 <div className="error-enchufe">

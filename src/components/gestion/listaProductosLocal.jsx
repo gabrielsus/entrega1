@@ -9,8 +9,9 @@ import AlertaSimple from "../../alertas/alertasimple";
 import IconoAgregar from "@/components/svg/iconoagregar";
 import categoriasData from "@/data/categories.json";
 import { useSearch } from "@/components/search/searchcontext.jsx";
-import { usePagination } from "@/hooks/usePagination.js"; // ajustá si está en otra carpeta
-import PaginationControls from "@/components/PaginationControls.jsx"; // ajustá si está en otra carpeta
+import { usePagination } from "@/hooks/usePagination.js"; 
+import PaginationControls from "@/components/PaginationControls.jsx"; 
+import Spinner from "@/spinner/spinner.jsx"; 
 
 const ListaProductosLocal = () => {
   const { searchTerm } = useSearch();
@@ -86,7 +87,7 @@ const ListaProductosLocal = () => {
     hasPrevPage,
   } = usePagination(productosFiltrados, pageSize, [categoriaFiltro, searchTerm]);
 
-  if (loading) return <div>Cargando productos...</div>;
+  if (loading) return <Spinner texto="Cargando productos..." />;
   if (error) return <div>Error: {error}</div>;
 
   return (
