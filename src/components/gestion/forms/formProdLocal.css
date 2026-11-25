@@ -198,3 +198,14 @@
 .btn-eliminar-submit {
   background-color: #e57373 !important;
 }
+
+.input-error {
+  border-color: #d93025;
+}
+
+.error-texto {
+  display: block;
+  margin-top: 4px;
+  color: #d93025;
+  font-size: 0.85rem;
+}
